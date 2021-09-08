@@ -29,9 +29,9 @@ you are given 3062 white tiles, and only have 2 unused tile left to spare.
 
 The total number of tiles for each color are listed below:
 
-| Tile color | # of tiles required for World Map | # of tiles in box set according to booklet |
-|---|---|---|
-| ![White](https://img.shields.io/badge/-White-snow) | 3062 | 3064 |
+| Tile color | # of tiles required for World Map | # of tiles in box set according to booklet | Actual # of tiles in my box |
+|---|---|---|---|
+| ![White](https://img.shields.io/badge/-White-snow) | 3062 | 3064 | 3198 |
 | ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91)) | 392 | 393 |
 | ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210)) | 1606 | 1607 |
 | ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150)) | 1878 | 1879 |
@@ -42,6 +42,17 @@ The total number of tiles for each color are listed below:
 | ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) | 229 | 601 |
 | ![Pink](https://img.shields.io/badge/-Pink-rgb(237,106,112)) | 203 | 601 |
 | **Total** | 10240 | 11130 |
+
+I also collected statistics on individual bags that I found in my set.
+Your tile count will probably be different to mine, since there appears to be
+some randomness.
+
+| Bag name | tile count |
+|---|---|
+| White bag 1 | 1065 |
+| White bag 2 | 1067 |
+| White bag 3 | 1064 |
+| White (extras bag) | 2 |
 
 ## Script descriptions
 
