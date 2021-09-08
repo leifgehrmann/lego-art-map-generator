@@ -32,7 +32,7 @@ The total number of tiles for each color are listed below:
 | Tile color | # of tiles required for World Map | # of tiles in box set according to booklet | Actual # of tiles in my box |
 |---|---|---|---|
 | ![White](https://img.shields.io/badge/-White-snow) | 3062 | 3064 | 3198 |
-| ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91)) | 392 | 393 |
+| ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91)) | 392 | 393 | 412 |
 | ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210)) | 1606 | 1607 |
 | ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150)) | 1878 | 1879 |
 | ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55)) | 529 | 601 |
@@ -52,7 +52,9 @@ some randomness.
 | White bag 1 | 1065 |
 | White bag 2 | 1067 |
 | White bag 3 | 1064 |
-| White (extras bag) | 2 |
+| White extras bag | 2 |
+| Navy bag 1 | 410 |
+| Navy extras bag | 2 |
 
 ## Script descriptions
 
