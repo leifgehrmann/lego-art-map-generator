@@ -33,14 +33,14 @@ The total number of tiles for each color are listed below:
 |---|---|---|---|
 | ![White](https://img.shields.io/badge/-White-snow) | 3062 | 3064 | 3198 |
 | ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91)) | 392 | 393 | 412 |
-| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210)) | 1606 | 1607 |
-| ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150)) | 1878 | 1879 |
-| ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55)) | 529 | 601 |
-| ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16)) | 1019 | 1060 |
-| ![Tan](https://img.shields.io/badge/-Tan-rgb(226,202,144)) | 724 | 725 |
-| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) | 598 | 599 |
-| ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) | 229 | 601 |
-| ![Pink](https://img.shields.io/badge/-Pink-rgb(237,106,112)) | 203 | 601 |
+| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210)) | 1606 | 1607 | |
+| ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150)) | 1878 | 1879 | |
+| ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55)) | 529 | 601 | |
+| ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16)) | 1019 | 1060 | |
+| ![Tan](https://img.shields.io/badge/-Tan-rgb(226,202,144)) | 724 | 725 | |
+| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) | 598 | 599 | |
+| ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) | 229 | 601 | |
+| ![Pink](https://img.shields.io/badge/-Pink-rgb(237,106,112)) | 203 | 601 | |
 | **Total** | 10240 | 11130 |
 
 I also collected statistics on individual bags that I found in my set.
@@ -55,6 +55,9 @@ some randomness.
 | White extras bag | 2 |
 | Navy bag 1 | 410 |
 | Navy extras bag | 2 |
+| Cyan bag 1 | 829 |
+| Cyan bag 2 |  |
+| Cyan extras bag | 2 |
 
 ## Script descriptions
 
