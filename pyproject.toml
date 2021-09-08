@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "lego-art-map-generator"
+version = "0.1.0"
+description = "Scripts for generating custom mosaics for the LEGO Art 'World Map' set."
+authors = ["Leif Gehrmann <leif.gehrmann@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

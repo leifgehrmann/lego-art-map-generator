@@ -2,7 +2,11 @@
 
 Scripts for generating custom mosaics for the LEGO Art 'World Map' set.
 
-This project is not affiliated with The Lego Group.
+It also has some notes of my research into the original LEGO 'World Map' set,
+such as how LEGO might have created the projection, and any interesting design
+decisions they made.
+
+**This project is not affiliated with The Lego Group.**
 
 ## Interesting notes about the LEGO Art world map set
 
@@ -18,3 +22,36 @@ This project is not affiliated with The Lego Group.
 ![LEGO World Map with coastlines on top](world-map-with-coastlines.png)
 
 [chukchi-peninsula]: https://en.wikipedia.org/wiki/Chukchi_Peninsula
+
+The box set contains an excess number of tiles to allow you to customise the
+world a bit, but the excess number is not uniform for every color. For example,
+you are given 3062 white tiles, and only have 2 unused tile left to spare.
+
+The total number of tiles for each color are listed below:
+
+| Tile color | # of tiles required for World Map | # of tiles in box set according to booklet |
+|---|---|---|
+| ![White](https://img.shields.io/badge/-White-snow) | 3062 | 3064 |
+| ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91)) | 392 | 393 |
+| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210)) | 1606 | 1607 |
+| ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150)) | 1878 | 1879 |
+| ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55)) | 529 | 601 |
+| ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16)) | 1019 | 1060 |
+| ![Tan](https://img.shields.io/badge/-Tan-rgb(226,202,144)) | 724 | 725 |
+| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) | 598 | 599 |
+| ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) | 229 | 601 |
+| ![Pink](https://img.shields.io/badge/-Pink-rgb(237,106,112)) | 203 | 601 |
+| **Total** | 10240 | 11130 |
+
+## Script descriptions
+
+### count_tiles.py
+
+Iterates through space separated CSV or ASCII Grid files and  returns the total
+number of tiles grouped by the tile number.  
+
+How to run:
+
+```console
+% poetry run python count_tiles.py ./world-map-tiles/col-*.asc
+```
