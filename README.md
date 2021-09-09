@@ -58,6 +58,9 @@ some randomness.
 | Cyan bag 1 | 829 |
 | Cyan bag 2 |  |
 | Cyan extras bag | 2 |
+| Teal bag 1 | 977 |
+| Teal bag 2 |  |
+| Teal extras bag | 2 |
 
 ## Script descriptions
 
