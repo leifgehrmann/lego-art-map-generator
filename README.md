@@ -37,7 +37,7 @@ The total number of tiles for each color are listed below:
 | ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150)) | 1878 | 1879 | |
 | ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55)) | 529 | 601 | 621 |
 | ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16)) | 1019 | 1060 | 1106 |
-| ![Tan](https://img.shields.io/badge/-Tan-rgb(226,202,144)) | 724 | 725 | |
+| ![Beige](https://img.shields.io/badge/-Beige-rgb(226,202,144)) | 724 | 725 | 752 |
 | ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) | 598 | 599 | |
 | ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) | 229 | 601 | |
 | ![Pink](https://img.shields.io/badge/-Pink-rgb(237,106,112)) | 203 | 601 | |
@@ -65,6 +65,8 @@ some randomness.
 | Green extras bag | 2 |
 | Olive bag | 1104 |
 | Olive extras bag | 2 |
+| Beige bag | 750 |
+| Beige extras bag | 2 |
 
 ## Script descriptions
 
