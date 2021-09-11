@@ -33,7 +33,7 @@ The total number of tiles for each color are listed below:
 |---|---|---|---|
 | ![White](https://img.shields.io/badge/-White-snow) | 3062 | 3064 | 3198 |
 | ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91)) | 392 | 393 | 410 |
-| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210)) | 1606 | 1607 | |
+| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210)) | 1606 | 1607 | 1668 |
 | ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150)) | 1878 | 1879 | |
 | ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55)) | 529 | 601 | 621 |
 | ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16)) | 1019 | 1060 | 1106 |
@@ -56,7 +56,7 @@ some randomness.
 | Navy bag 1 | 408 |
 | Navy extras bag | 2 |
 | Cyan bag 1 | 829 |
-| Cyan bag 2 |  |
+| Cyan bag 2 | 837 |
 | Cyan extras bag | 2 |
 | Teal bag 1 | 977 |
 | Teal bag 2 |  |
