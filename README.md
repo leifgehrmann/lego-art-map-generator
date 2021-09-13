@@ -41,7 +41,7 @@ The total number of tiles for each color are listed below:
 | ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) | 598 | 599 | 619|
 | ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) | 229 | 601 | 625 |
 | ![Coral](https://img.shields.io/badge/-Coral-rgb(237,106,112)) | 203 | 601 | 627 |
-| **Total** | 10240 | 11130 |
+| **Total** | **10240** | **11130** | **11582** |
 
 I also collected statistics on individual bags that I found in my set.
 Your tile count will probably be different to mine, since there appears to be
