@@ -9,6 +9,7 @@ total_count = 0
 # Grab all the file names passed in as arguments
 files = sys.argv[1:]
 
+
 def strip_ascii_grid_header(ascii_grid_contents: str) -> str:
     """
     If the the file is an .asc file (ASCII Grid), then we want to ignore
@@ -21,6 +22,7 @@ def strip_ascii_grid_header(ascii_grid_contents: str) -> str:
         index = match.start()
         return ascii_grid_contents[index:]
     raise Exception('Unexpected contents of ASCII Grid file')
+
 
 # Parse every ASCII Grid file
 contents_arr = []
