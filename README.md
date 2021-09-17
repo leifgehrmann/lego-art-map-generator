@@ -76,7 +76,7 @@ some randomness.
 
 ## Script descriptions
 
-### count_tiles.py
+### count_tiles_from_ascii.py
 
 Iterates through space separated CSV or ASCII Grid files and  returns the total
 number of tiles grouped by the tile number.  
@@ -84,5 +84,5 @@ number of tiles grouped by the tile number.
 How to run:
 
 ```console
-% poetry run python count_tiles.py ./world-map-tiles/col-*.asc
+% poetry run python lego_art_map_generator/count_tiles_from_ascii.py ./data/lego_world_map_ascii/column-*.asc
 ```
