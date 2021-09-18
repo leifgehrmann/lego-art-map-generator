@@ -18,6 +18,11 @@ help:
 install: ## install dependencies
 	poetry install
 
+download_land: ## Checks for linting errors
+	poetry run python lego_art_map_generator/natural_earth.py \
+	https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_land.zip \
+	data
+
 lint: ## Checks for linting errors
 	poetry run flake8
 

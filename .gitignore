@@ -1,3 +1,7 @@
 .idea
 .DS_Store
+
 output
+
+data/*.dbf
+data/*.shp
