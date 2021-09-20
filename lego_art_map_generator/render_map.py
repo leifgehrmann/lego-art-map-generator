@@ -1,10 +1,21 @@
 from pathlib import Path
+from typing import List
 
+import cairocffi
+import pyproj
+import shapefile
 from map_engraver.canvas import CanvasBuilder
 
 # Create the canvas
 from map_engraver.canvas.canvas_unit import CanvasUnit
+from map_engraver.data import geo_canvas_ops, osm_shapely_ops
+from map_engraver.data.geo.geo_coordinate import GeoCoordinate
+from map_engraver.data.osm_shapely.osm_point import OsmPoint
+from map_engraver.drawable.geometry.polygon_drawer import PolygonDrawer
 from map_engraver.drawable.layout.background import Background
+from shapely import ops
+from shapely.geometry import shape
+from shapely.geometry.base import BaseGeometry
 
 output_path = Path(__file__).parent.parent.joinpath('output')
 output_path.mkdir(parents=True, exist_ok=True)
@@ -20,9 +31,67 @@ background = Background()
 background.color = (0, 0, 0, 1)
 background.draw(canvas)
 
-# 2. Read world map shapefile
-# 3. Transform shapes
-# 4. Render land, shifted by 1 pixel
-# 5. Render land
+
+# Read world map shapefile
+def parse_shapefile(shapefile_path: Path):
+    shapefile_collection = shapefile.Reader(shapefile_path.as_posix())
+    shapely_objects = []
+    for shape_record in shapefile_collection.shapeRecords():
+        shapely_objects.append(shape(shape_record.shape.__geo_interface__))
+    return shapely_objects
+
+
+land_shapes = parse_shapefile(Path(__file__).parent.parent.joinpath('data/ne_110m_land.shp'))
+
+
+# Invert CRS for shapes, because shapefiles are store coordinates are lon/lat,
+# not according to the ISO-approved standard.
+def transform_geoms_to_invert(geoms: List[BaseGeometry]):
+    return list(map(
+        lambda geom: ops.transform(lambda x, y: (y, x), geom),
+        geoms
+    ))
+
+
+land_shapes = transform_geoms_to_invert(land_shapes)
+
+
+wgs84_crs = pyproj.CRS.from_epsg(4326)
+plate_crs = pyproj.CRS.from_epsg(32662)
+geo_width = 20026376.39 * 2
+canvas_width = CanvasUnit.from_px(128)
+geo_canvas_scale = geo_canvas_ops.GeoCanvasScale(geo_width, canvas_width)
+origin_for_geo = GeoCoordinate(-20026376.39, 9462156.72, plate_crs)
+wgs84_canvas_transformer = geo_canvas_ops.build_transformer(
+    crs=plate_crs,
+    scale=geo_canvas_scale,
+    origin_for_geo=origin_for_geo,
+    data_crs=wgs84_crs
+)
+
+
+# Transform array of polygons to canvas:
+def transform_geom_to_canvas(geom: BaseGeometry):
+    if isinstance(geom, OsmPoint):
+        return osm_shapely_ops.transform(wgs84_canvas_transformer, geom)
+    else:
+        return ops.transform(wgs84_canvas_transformer, geom)
+
+
+def transform_geoms_to_canvas(geoms: List[BaseGeometry]) -> List[BaseGeometry]:
+    return list(map(transform_geom_to_canvas, geoms))
+
+
+canvas.context.set_antialias(cairocffi.ANTIALIAS_NONE)
+
+land_shapes = transform_geoms_to_canvas(land_shapes)
+# Render land, shifted by 1 pixel
+
+# Render land
+land_drawer = PolygonDrawer()
+land_drawer.geoms = land_shapes
+
+land_drawer.fill_color = (1, 1, 1, 1)
+land_drawer.draw(canvas)
 
 canvas.close()
