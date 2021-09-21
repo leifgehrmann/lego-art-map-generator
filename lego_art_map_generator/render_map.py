@@ -55,19 +55,23 @@ def transform_geoms_to_invert(geoms: List[BaseGeometry]):
 
 land_shapes = transform_geoms_to_invert(land_shapes)
 
-
 wgs84_crs = pyproj.CRS.from_epsg(4326)
 plate_crs = pyproj.CRS.from_epsg(32662)
 geo_width = 20026376.39 * 2
 canvas_width = CanvasUnit.from_px(128)
 geo_canvas_scale = geo_canvas_ops.GeoCanvasScale(geo_width, canvas_width)
 origin_for_geo = GeoCoordinate(-20026376.39, 9462156.72, plate_crs)
-wgs84_canvas_transformer = geo_canvas_ops.build_transformer(
+wgs84_canvas_transformer_raw = geo_canvas_ops.build_transformer(
     crs=plate_crs,
     scale=geo_canvas_scale,
     origin_for_geo=origin_for_geo,
     data_crs=wgs84_crs
 )
+
+
+def wgs84_canvas_transformer(x, y):
+    coord = wgs84_canvas_transformer_raw(x, y)
+    return coord[0], coord[1] * 1.3
 
 
 # Transform array of polygons to canvas:
@@ -82,10 +86,27 @@ def transform_geoms_to_canvas(geoms: List[BaseGeometry]) -> List[BaseGeometry]:
     return list(map(transform_geom_to_canvas, geoms))
 
 
-canvas.context.set_antialias(cairocffi.ANTIALIAS_NONE)
+# canvas.context.set_antialias(cairocffi.ANTIALIAS_NONE)
 
 land_shapes = transform_geoms_to_canvas(land_shapes)
+
+
 # Render land, shifted by 1 pixel
+def transform_geom_by_1_pixel(geom: BaseGeometry):
+    return ops.transform(lambda x, y: (x + 0.5, y), geom)
+
+
+def transform_geoms_by_1_pixel(geoms: List[BaseGeometry]) -> List[BaseGeometry]:
+    return list(map(transform_geom_by_1_pixel, geoms))
+
+
+# land_shapes_shadow = transform_geoms_by_1_pixel(land_shapes)
+#
+# land_shadow_drawer = PolygonDrawer()
+# land_shadow_drawer.geoms = land_shapes_shadow
+#
+# land_shadow_drawer.fill_color = (0, 53 / 255, 91 / 255, 1)
+# land_shadow_drawer.draw(canvas)
 
 # Render land
 land_drawer = PolygonDrawer()
