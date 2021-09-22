@@ -19,7 +19,7 @@ from shapely.geometry.base import BaseGeometry
 
 output_path = Path(__file__).parent.parent.joinpath('output')
 output_path.mkdir(parents=True, exist_ok=True)
-path = output_path.joinpath('map.png')
+path = output_path.joinpath('map-plate-carree.png')
 path.unlink(missing_ok=True)
 canvas_builder = CanvasBuilder()
 canvas_builder.set_path(path)
@@ -57,6 +57,7 @@ land_shapes = transform_geoms_to_invert(land_shapes)
 
 wgs84_crs = pyproj.CRS.from_epsg(4326)
 plate_crs = pyproj.CRS.from_epsg(32662)
+plate_crs = pyproj.CRS.from_proj4('+proj=eqc +lat_ts=0 +lat_0=3.5 +lon_0=11.5 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs')
 geo_width = 20026376.39 * 2
 canvas_width = CanvasUnit.from_px(128)
 geo_canvas_scale = geo_canvas_ops.GeoCanvasScale(geo_width, canvas_width)
@@ -71,7 +72,7 @@ wgs84_canvas_transformer_raw = geo_canvas_ops.build_transformer(
 
 def wgs84_canvas_transformer(x, y):
     coord = wgs84_canvas_transformer_raw(x, y)
-    return coord[0], coord[1] * 1.3
+    return coord[0], coord[1] * 1
 
 
 # Transform array of polygons to canvas:
