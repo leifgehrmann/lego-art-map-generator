@@ -1,7 +1,6 @@
 from pathlib import Path
 from typing import List
 
-import cairocffi
 import pyproj
 import shapefile
 from map_engraver.canvas import CanvasBuilder
@@ -14,13 +13,12 @@ from map_engraver.data.osm_shapely.osm_point import OsmPoint
 from map_engraver.drawable.geometry.polygon_drawer import PolygonDrawer
 from map_engraver.drawable.layout.background import Background
 from shapely import ops
-from shapely.geometry import shape
+from shapely.geometry import shape, Polygon
 from shapely.geometry.base import BaseGeometry
 
 output_path = Path(__file__).parent.parent.joinpath('output')
 output_path.mkdir(parents=True, exist_ok=True)
-path = output_path.joinpath('map-plate-carree.png')
-# path = output_path.joinpath('map-wgs84.png')
+path = output_path.joinpath('map.png')
 path.unlink(missing_ok=True)
 canvas_builder = CanvasBuilder()
 canvas_builder.set_path(path)
@@ -42,7 +40,30 @@ def parse_shapefile(shapefile_path: Path):
     return shapely_objects
 
 
-land_shapes = parse_shapefile(Path(__file__).parent.parent.joinpath('data/ne_110m_land.shp'))
+land_shapes = parse_shapefile(
+    Path(__file__).parent.parent.joinpath('data/ne_110m_land.shp')
+)
+
+lake_shapes = parse_shapefile(
+    Path(__file__).parent.parent.joinpath('data/ne_110m_lakes.shp')
+)
+
+
+# Subtract lakes from land
+def subtract_lakes_from_land(land: Polygon, lakes: List[Polygon]):
+    for lake in lakes:
+        try:
+            land = land.difference(lake)
+        except TopologyException:
+            pass
+
+    return land
+
+
+land_shapes = list(map(
+    lambda geom: subtract_lakes_from_land(geom, lake_shapes),
+    land_shapes
+))
 
 
 # Invert CRS for shapes, because shapefiles are store coordinates are lon/lat,
@@ -54,28 +75,23 @@ def transform_geoms_to_invert(geoms: List[BaseGeometry]):
     ))
 
 
-land_shapes = transform_geoms_to_invert(land_shapes)
-
 wgs84_crs = pyproj.CRS.from_epsg(4326)
-plate_crs = pyproj.CRS.from_epsg(32662)
-# plate_crs = pyproj.CRS.from_proj4('+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs')
-geo_width = 20026376.39 * 2
-# geo_width = 360
 canvas_width = CanvasUnit.from_px(128)
-geo_canvas_scale = geo_canvas_ops.GeoCanvasScale(geo_width, canvas_width)
-origin_for_geo = GeoCoordinate(-20026376.39, 9462156.72, plate_crs)
-# origin_for_geo = GeoCoordinate(-180, 90, plate_crs)
+geo_canvas_scale = geo_canvas_ops.GeoCanvasScale(360, canvas_width)
+origin_for_geo = GeoCoordinate(-180, 90, wgs84_crs)
 wgs84_canvas_transformer_raw = geo_canvas_ops.build_transformer(
-    crs=plate_crs,
+    crs=wgs84_crs,
     scale=geo_canvas_scale,
-    origin_for_geo=origin_for_geo,
-    data_crs=wgs84_crs
+    origin_for_geo=origin_for_geo
 )
 
 
 def wgs84_canvas_transformer(x, y):
     coord = wgs84_canvas_transformer_raw(x, y)
-    return coord[0], coord[1] * 1
+    y_scale = 1.25
+    x_offset = -3
+    y_offset = 1
+    return (coord[0] + x_offset), (coord[1] + y_offset) * y_scale
 
 
 # Transform array of polygons to canvas:
@@ -90,27 +106,7 @@ def transform_geoms_to_canvas(geoms: List[BaseGeometry]) -> List[BaseGeometry]:
     return list(map(transform_geom_to_canvas, geoms))
 
 
-# canvas.context.set_antialias(cairocffi.ANTIALIAS_NONE)
-
 land_shapes = transform_geoms_to_canvas(land_shapes)
-
-
-# Render land, shifted by 1 pixel
-def transform_geom_by_1_pixel(geom: BaseGeometry):
-    return ops.transform(lambda x, y: (x + 0.5, y), geom)
-
-
-def transform_geoms_by_1_pixel(geoms: List[BaseGeometry]) -> List[BaseGeometry]:
-    return list(map(transform_geom_by_1_pixel, geoms))
-
-
-# land_shapes_shadow = transform_geoms_by_1_pixel(land_shapes)
-#
-# land_shadow_drawer = PolygonDrawer()
-# land_shadow_drawer.geoms = land_shapes_shadow
-#
-# land_shadow_drawer.fill_color = (0, 53 / 255, 91 / 255, 1)
-# land_shadow_drawer.draw(canvas)
 
 # Render land
 land_drawer = PolygonDrawer()
