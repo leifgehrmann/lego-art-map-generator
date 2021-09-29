@@ -74,6 +74,32 @@ some randomness.
 | Coral bag | 625 |
 | Coral extras bag | 2 |
 
+## Different land rendering attempts
+
+Below are a few variations of the world map using different rendering methods.
+The goal is to retain high fidelity to the source image, a grayscale image,
+even though it is reduced to a 1-bit image.
+Since the LEGO version is artificial, with some islands deliberately scaled up,
+it is unlikely that one can create a rendering method that matches the LEGO
+map, but if it can match the following criteria, the renderer could be useful
+in other non-world-map situations:
+
+* Highlights islands, such as the Kerguelen Islands.
+* Highlights rivers, such as the Red Sea.
+
+| Rendering Method | Result |
+|----|----|
+| LEGO (full) | ![LEGO map with colours](readme_files/full_lego.png) |
+| LEGO (land) | ![LEGO map with just land tiles](readme_files/land_lego.png) |
+| [Cairo] render with anti-aliasing | ![Map with anti-aliasing](readme_files/land_grayscale.png) |
+| [Cairo] render without anti-aliasing | ![Map without anti-aliasing](readme_files/land_cairo.png) |
+| [Imagemagick's] `convert -depth 1` | ![Map using Imagemagick](readme_files/land_imagemagick_convert.png) |
+| [Pillow's] `.convert('1')` | ![Map using Pillow's convert](readme_files/land_pillow_convert.png) |
+
+[Cairo]: https://www.cairographics.org
+[Imagemagick's]: https://imagemagick.org
+[Pillow's]: https://github.com/python-pillow/Pillow 
+
 ## Script descriptions
 
 ### count_tiles_from_ascii.py
