@@ -13,16 +13,19 @@ from map_engraver.data.osm_shapely.osm_point import OsmPoint
 from map_engraver.drawable.geometry.polygon_drawer import PolygonDrawer
 from map_engraver.drawable.layout.background import Background
 from shapely import ops
+from shapely.errors import TopologicalError
 from shapely.geometry import shape, Polygon
 from shapely.geometry.base import BaseGeometry
 
 output_path = Path(__file__).parent.parent.joinpath('output')
 output_path.mkdir(parents=True, exist_ok=True)
-path = output_path.joinpath('map.png')
+path = output_path.joinpath('land_grayscale.png')
 path.unlink(missing_ok=True)
 canvas_builder = CanvasBuilder()
 canvas_builder.set_path(path)
-canvas_builder.set_size(CanvasUnit.from_px(128), CanvasUnit.from_px(80))
+canvas_width = CanvasUnit.from_px(128)
+canvas_height = CanvasUnit.from_px(80)
+canvas_builder.set_size(canvas_width, canvas_height)
 canvas = canvas_builder.build()
 
 # Set the black background
@@ -54,7 +57,7 @@ def subtract_lakes_from_land(land: Polygon, lakes: List[Polygon]):
     for lake in lakes:
         try:
             land = land.difference(lake)
-        except TopologyException:
+        except TopologicalError:
             pass
 
     return land
@@ -76,7 +79,6 @@ def transform_geoms_to_invert(geoms: List[BaseGeometry]):
 
 
 wgs84_crs = pyproj.CRS.from_epsg(4326)
-canvas_width = CanvasUnit.from_px(128)
 geo_canvas_scale = geo_canvas_ops.GeoCanvasScale(360, canvas_width)
 origin_for_geo = GeoCoordinate(-180, 90, wgs84_crs)
 wgs84_canvas_transformer_raw = geo_canvas_ops.build_transformer(
