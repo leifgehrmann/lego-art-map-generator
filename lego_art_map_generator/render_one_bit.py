@@ -25,8 +25,8 @@ def get_neighbors(x: int, y: int, source) -> List[int]:
         for n_y_o in (-1, 0, 1):
             if n_x_o == 0 and n_y_o == 0:
                 continue
-            n_y = (x + n_y_o) % source_height
-            n_x = (y + n_x_o) % source_width
+            n_y = (y + n_y_o) % source_height
+            n_x = (x + n_x_o) % source_width
             n.append(source[n_y, n_x])
     return n
 
@@ -34,23 +34,14 @@ def get_neighbors(x: int, y: int, source) -> List[int]:
 # Filter function
 def one_bit_filter(x: int, y: int, source) -> int:
     c_val = source[y, x]
-    if c_val >= 250:
-        return 255
     neighbors = get_neighbors(x, y, source)
-    adjacent_above_threshold = 255 * 0.5
-    adjacent_below_threshold = 255 * 0.5
-    adjacent_above_count = 0
-    adjacent_below_count = 0
-    for n_val in neighbors:
-        if n_val > adjacent_above_threshold:
-            adjacent_above_count += 1
-        if n_val < adjacent_below_threshold:
-            adjacent_below_count += 1
-    if c_val > adjacent_above_threshold and adjacent_above_count > 6:
+    n_val = sum(neighbors) / float(len(neighbors))
+    if n_val > c_val * 1.15:
+        return 0
+    elif n_val < c_val * 0.85:
         return 255
-    if c_val > adjacent_below_threshold and adjacent_below_count > 6:
+    if c_val > 125:
         return 255
-
     return 0
 
 
