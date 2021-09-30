@@ -5,33 +5,38 @@ import pyproj
 import shapefile
 from map_engraver.canvas import CanvasBuilder
 
-# Create the canvas
 from map_engraver.canvas.canvas_unit import CanvasUnit
-from map_engraver.data import geo_canvas_ops, osm_shapely_ops
+from map_engraver.data import geo_canvas_ops
 from map_engraver.data.geo.geo_coordinate import GeoCoordinate
-from map_engraver.data.osm_shapely.osm_point import OsmPoint
 from map_engraver.drawable.geometry.polygon_drawer import PolygonDrawer
 from map_engraver.drawable.layout.background import Background
 from shapely import ops
-from shapely.errors import TopologicalError
-from shapely.geometry import shape, Polygon
+from shapely.geometry import shape
 from shapely.geometry.base import BaseGeometry
 
+# Map projection configurations:
+# Stretch the world map height
+y_scale = 1.25
+# Shift the world map in pixels
+x_offset = CanvasUnit.from_px(-4)
+y_offset = CanvasUnit.from_px(1)
+
+# Specify the files to load, and where to save
+data_path = Path(__file__).parent.parent.joinpath('data')
+land_shape_path = data_path.joinpath('ne_110m_land.shp')
+lake_shape_path = data_path.joinpath('ne_110m_lakes.shp')
 output_path = Path(__file__).parent.parent.joinpath('output')
 output_path.mkdir(parents=True, exist_ok=True)
-path = output_path.joinpath('land_grayscale.png')
-path.unlink(missing_ok=True)
+canvas_path = output_path.joinpath('land_grayscale.png')
+canvas_path.unlink(missing_ok=True)
+
+# Create the canvas
 canvas_builder = CanvasBuilder()
-canvas_builder.set_path(path)
+canvas_builder.set_path(canvas_path)
 canvas_width = CanvasUnit.from_px(128)
 canvas_height = CanvasUnit.from_px(80)
 canvas_builder.set_size(canvas_width, canvas_height)
 canvas = canvas_builder.build()
-
-# Set the black background
-background = Background()
-background.color = (0, 0, 0, 1)
-background.draw(canvas)
 
 
 # Read world map shapefile
@@ -43,30 +48,8 @@ def parse_shapefile(shapefile_path: Path):
     return shapely_objects
 
 
-land_shapes = parse_shapefile(
-    Path(__file__).parent.parent.joinpath('data/ne_110m_land.shp')
-)
-
-lake_shapes = parse_shapefile(
-    Path(__file__).parent.parent.joinpath('data/ne_110m_lakes.shp')
-)
-
-
-# Subtract lakes from land
-def subtract_lakes_from_land(land: Polygon, lakes: List[Polygon]):
-    for lake in lakes:
-        try:
-            land = land.difference(lake)
-        except TopologicalError:
-            pass
-
-    return land
-
-
-land_shapes = list(map(
-    lambda geom: subtract_lakes_from_land(geom, lake_shapes),
-    land_shapes
-))
+land_shapes = parse_shapefile(land_shape_path)
+lake_shapes = parse_shapefile(lake_shape_path)
 
 
 # Invert CRS for shapes, because shapefiles are store coordinates are lon/lat,
@@ -90,31 +73,49 @@ wgs84_canvas_transformer_raw = geo_canvas_ops.build_transformer(
 
 def wgs84_canvas_transformer(x, y):
     coord = wgs84_canvas_transformer_raw(x, y)
-    y_scale = 1.25
-    x_offset = -3
-    y_offset = 1
-    return (coord[0] + x_offset), (coord[1] + y_offset) * y_scale
+    return (coord[0] + x_offset.pt), (coord[1] + y_offset.pt) * y_scale
+
+
+def anti_meridian_transformer(x, y):
+    if x_offset.pt > 0:
+        return (x - canvas_width.pt), y
+    else:
+        return (x + canvas_width.pt), y
 
 
 # Transform array of polygons to canvas:
 def transform_geom_to_canvas(geom: BaseGeometry):
-    if isinstance(geom, OsmPoint):
-        return osm_shapely_ops.transform(wgs84_canvas_transformer, geom)
-    else:
-        return ops.transform(wgs84_canvas_transformer, geom)
+    return ops.transform(wgs84_canvas_transformer, geom)
+
+
+def transform_anti_meridian(geom: BaseGeometry):
+    return ops.transform(anti_meridian_transformer, geom)
 
 
 def transform_geoms_to_canvas(geoms: List[BaseGeometry]) -> List[BaseGeometry]:
-    return list(map(transform_geom_to_canvas, geoms))
+    # Because the world wraps along the anti-meridian, we need the exact same
+    # polygons shifted by the canvas's width.
+    left_geoms = list(map(transform_geom_to_canvas, geoms))
+    right_geoms = list(map(transform_anti_meridian, left_geoms))
+    return left_geoms + right_geoms
 
 
 land_shapes = transform_geoms_to_canvas(land_shapes)
+lake_shapes = transform_geoms_to_canvas(lake_shapes)
 
-# Render land
-land_drawer = PolygonDrawer()
-land_drawer.geoms = land_shapes
+# Set the black background
+background = Background()
+background.color = (0, 0, 0, 1)
+background.draw(canvas)
 
-land_drawer.fill_color = (1, 1, 1, 1)
-land_drawer.draw(canvas)
+# Render shapes
+polygon_drawer = PolygonDrawer()
+polygon_drawer.fill_color = (1, 1, 1, 1)
+polygon_drawer.geoms = land_shapes
+polygon_drawer.draw(canvas)
+
+polygon_drawer.fill_color = (0, 0, 0, 1)
+polygon_drawer.geoms = lake_shapes
+polygon_drawer.draw(canvas)
 
 canvas.close()
