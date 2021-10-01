@@ -89,13 +89,13 @@ in other non-world-map situations:
 
 | Rendering Method | Result |
 |----|----|
-| LEGO (full) | ![LEGO map with colours](readme_files/full_lego.png) |
-| LEGO (land) | ![LEGO map with just land tiles](readme_files/land_lego.png) |
-| Render with anti-aliasing | ![Map with anti-aliasing](readme_files/land_grayscale.png) |
-| Render without anti-aliasing | ![Map without anti-aliasing](readme_files/land_aliased.png) |
-| [Threshold Filter] | ![Map using a threshold filter](readme_files/land_threshold.png) |
-| [Floyd-Steinberg Dithering] | ![Map using a dithering filter](readme_files/land_dither.png) |
-| Custom filter | ![Map using Pillow's convert](readme_files/land_custom.png) |
+| LEGO (full) | ![LEGO map with colours](readme_files/full_lego_x3.png) |
+| LEGO (land) | ![LEGO map with just land tiles](readme_files/land_lego_x3.png) |
+| Render with anti-aliasing | ![Map with anti-aliasing](readme_files/land_grayscale_x3.png) |
+| Render without anti-aliasing | ![Map without anti-aliasing](readme_files/land_aliased_x3.png) |
+| [Threshold Filter] | ![Map using a threshold filter](readme_files/land_threshold_x3.png) |
+| [Floyd-Steinberg Dithering] | ![Map using a dithering filter](readme_files/land_dither_x3.png) |
+| Custom filter | ![Map using Pillow's convert](readme_files/land_custom_x3.png) |
 
 [Cairo]: https://www.cairographics.org
 [Threshold Filter]: https://en.wikipedia.org/wiki/Thresholding_(image_processing)
