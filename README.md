@@ -91,14 +91,15 @@ in other non-world-map situations:
 |----|----|
 | LEGO (full) | ![LEGO map with colours](readme_files/full_lego.png) |
 | LEGO (land) | ![LEGO map with just land tiles](readme_files/land_lego.png) |
-| [Cairo] render with anti-aliasing | ![Map with anti-aliasing](readme_files/land_grayscale.png) |
-| [Cairo] render without anti-aliasing | ![Map without anti-aliasing](readme_files/land_cairo.png) |
-| [Imagemagick's] `convert -depth 1` | ![Map using Imagemagick](readme_files/land_imagemagick_convert.png) |
-| [Pillow's] `.convert('1')` | ![Map using Pillow's convert](readme_files/land_pillow_convert.png) |
+| Render with anti-aliasing | ![Map with anti-aliasing](readme_files/land_grayscale.png) |
+| Render without anti-aliasing | ![Map without anti-aliasing](readme_files/land_aliased.png) |
+| [Threshold Filter] | ![Map using a threshold filter](readme_files/land_threshold.png) |
+| [Floyd-Steinberg Dithering] | ![Map using a dithering filter](readme_files/land_dither.png) |
+| Custom filter | ![Map using Pillow's convert](readme_files/land_custom.png) |
 
 [Cairo]: https://www.cairographics.org
-[Imagemagick's]: https://imagemagick.org
-[Pillow's]: https://github.com/python-pillow/Pillow 
+[Threshold Filter]: https://en.wikipedia.org/wiki/Thresholding_(image_processing)
+[Floyd-Steinberg Dithering]: https://en.wikipedia.org/wiki/Floyd–Steinberg_dithering
 
 ## Script descriptions
 
