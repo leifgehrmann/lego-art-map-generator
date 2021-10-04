@@ -85,7 +85,7 @@ map, but if it can match the following criteria, the renderer could be useful
 in other non-world-map situations:
 
 * Highlights islands, such as the Kerguelen Islands.
-* Highlights rivers, such as the Red Sea.
+* Highlights narrow seas, such as the Red Sea.
 
 | Rendering Method | Result |
 |----|----|
