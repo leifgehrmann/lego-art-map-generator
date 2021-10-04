@@ -18,7 +18,7 @@ from PIL import Image
 def render(src: str, dst: str):
     input_filepath = Path(src)
     output_filepath = Path(dst)
-    shadow_color = (18, 53, 88)
+    shadow_color = (0, 53, 91)
 
     image = Image.open(input_filepath.as_posix()).convert('RGB')
 
