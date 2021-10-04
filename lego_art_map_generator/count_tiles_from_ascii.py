@@ -10,6 +10,24 @@ total_count = 0
 files = sys.argv[1:]
 
 
+def get_tile_name_alias(tile_number: str) -> str:
+    tile_name_alias = {
+        '1': '01 - White',
+        '2': '02 - Navy',
+        '3': '03 - Cyan',
+        '4': '04 - Teal',
+        '5': '05 - Green',
+        '6': '06 - Olive',
+        '7': '07 - Beige',
+        '8': '08 - Yellow',
+        '9': '09 - Orange',
+        '10': '10 - Coral',
+    }
+    if tile_name in tile_name_alias:
+        return tile_name_alias[tile_number]
+    return tile_name
+
+
 def strip_ascii_grid_header(ascii_grid_contents: str) -> str:
     """
     If the the file is an .asc file (ASCII Grid), then we want to ignore
@@ -33,6 +51,7 @@ for file in files:
     # Tally up the number of tiles for each tile 'name'
     for contents_arr_row in contents_arr:
         for tile_name in contents_arr_row:
+            tile_name = get_tile_name_alias(tile_name)
             if tile_name in tile_count:
                 tile_count[tile_name] += 1
             else:
@@ -40,7 +59,6 @@ for file in files:
             total_count += 1
 
 # Print out the totals, sorted alphabetically
-for tile_name in [i for i in sorted(tile_count.keys(), key=int)]:
-    print(tile_name, tile_count[tile_name])
-
-print('total', total_count)
+for tile_name in [i for i in sorted(tile_count.keys())]:
+    print('{:<15}{:>5}'.format(tile_name + ':', tile_count[tile_name]))
+print('{:<15}{:>5}'.format('total:', total_count))

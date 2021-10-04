@@ -105,13 +105,24 @@ in other non-world-map situations:
 
 ### count_tiles_from_ascii.py
 
-Iterates through space separated CSV or ASCII Grid files and  returns the total
+Iterates through space separated CSV or ASCII Grid files and returns the total
 number of tiles grouped by the tile number.  
 
 How to run:
 
 ```console
 % poetry run python lego_art_map_generator/count_tiles_from_ascii.py ./data/lego_world_map_ascii/column-*.asc
+```
+
+### count_tiles_from_image.py
+
+Iterates through image files and returns the total number of tiles grouped by
+the tile color.  
+
+How to run:
+
+```console
+% poetry run python lego_art_map_generator/count_tiles_from_image.py ./readme_files/full_lego.png
 ```
 
 ### natural_earth.py
