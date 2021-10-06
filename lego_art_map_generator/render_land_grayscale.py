@@ -1,15 +1,12 @@
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 import cairocffi
 import click
-import pyproj
 import shapefile
 from map_engraver.canvas import CanvasBuilder
 
 from map_engraver.canvas.canvas_unit import CanvasUnit
-from map_engraver.data import geo_canvas_ops
-from map_engraver.data.geo.geo_coordinate import GeoCoordinate
 from map_engraver.drawable.geometry.polygon_drawer import PolygonDrawer
 from map_engraver.drawable.layout.background import Background
 from shapely import ops
@@ -29,13 +26,6 @@ from shapely.geometry.base import BaseGeometry
     help='Disables anti-aliasing when rendering the image.'
 )
 def render(dst: str, aliased: bool):
-    # Map projection configurations:
-    # Stretch the world map height
-    y_scale = 1.25
-    # Shift the world map in pixels
-    x_offset = CanvasUnit.from_px(-4)
-    y_offset = CanvasUnit.from_px(1)
-
     # Specify the files to load, and where to save
     data_path = Path(__file__).parent.parent.joinpath('data')
     land_shape_path = data_path.joinpath('ne_110m_land.shp')
@@ -65,20 +55,59 @@ def render(dst: str, aliased: bool):
     land_shapes = parse_shapefile(land_shape_path)
     lake_shapes = parse_shapefile(lake_shape_path)
 
-    wgs84_crs = pyproj.CRS.from_epsg(4326)
-    geo_canvas_scale = geo_canvas_ops.GeoCanvasScale(360, canvas_width)
-    origin_for_geo = GeoCoordinate(-180, 90, wgs84_crs)
-    wgs84_canvas_transformer_raw = geo_canvas_ops.build_transformer(
-        crs=wgs84_crs,
-        scale=geo_canvas_scale,
-        origin_for_geo=origin_for_geo
-    )
+    def lego_projection_transformer(
+            longitude: float,
+            latitude: float
+    ) -> Tuple[float, float]:
+        """
+        The Lego projection stretches the map vertically in a non-linear way,
+        and also applies a horizontal offset.
+        """
+        x_percentage = (longitude + 180) / 360
+        x_offset = CanvasUnit.from_px(-4)
+        x_canvas = x_percentage * canvas_width.pt + x_offset.pt
 
-    def wgs84_canvas_transformer(x, y):
-        coord = wgs84_canvas_transformer_raw(x, y)
-        return (coord[0] + x_offset.pt), (coord[1] + y_offset.pt) * y_scale
+        # The latitude mappings below assume that the canvas height is 80px.
+        if latitude < -83:
+            min_latitude_range = -90
+            max_latitude_range = -83
+            # Add 1 to ensure the transformed polygon doesn't self-intersect.
+            min_y_range = CanvasUnit.from_px(80 + 1).pt
+            max_y_range = CanvasUnit.from_px(80).pt
+        elif latitude < -60:
+            min_latitude_range = -83
+            max_latitude_range = -60
+            min_y_range = CanvasUnit.from_px(80).pt
+            max_y_range = CanvasUnit.from_px(70).pt
+        elif latitude < -57:
+            min_latitude_range = -60
+            max_latitude_range = -57
+            min_y_range = CanvasUnit.from_px(70).pt
+            max_y_range = CanvasUnit.from_px(67).pt
+        elif latitude < 86:
+            min_latitude_range = -57
+            max_latitude_range = 86
+            min_y_range = CanvasUnit.from_px(67).pt
+            max_y_range = CanvasUnit.from_px(4).pt
+        elif latitude < 86:
+            min_latitude_range = 86
+            max_latitude_range = 86
+            min_y_range = CanvasUnit.from_px(4).pt
+            max_y_range = CanvasUnit.from_px(4).pt
+        else:
+            min_latitude_range = 86
+            max_latitude_range = 90
+            min_y_range = CanvasUnit.from_px(4).pt
+            max_y_range = CanvasUnit.from_px(0).pt
 
-    def anti_meridian_transformer(x, y):
+        y_percentage = (latitude - min_latitude_range) / \
+                       (max_latitude_range - min_latitude_range)
+        y_canvas = y_percentage * (max_y_range - min_y_range) + min_y_range
+        return x_canvas, y_canvas
+
+    def anti_meridian_transformer(x: float, y: float) -> Tuple[float, float]:
+        # See `lego_projection_transformer()`
+        x_offset = CanvasUnit.from_px(-4)
         if x_offset.pt > 0:
             return (x - canvas_width.pt), y
         else:
@@ -86,7 +115,7 @@ def render(dst: str, aliased: bool):
 
     # Transform array of polygons to canvas:
     def transform_geom_to_canvas(geom: BaseGeometry):
-        return ops.transform(wgs84_canvas_transformer, geom)
+        return ops.transform(lego_projection_transformer, geom)
 
     def transform_anti_meridian(geom: BaseGeometry):
         return ops.transform(anti_meridian_transformer, geom)
