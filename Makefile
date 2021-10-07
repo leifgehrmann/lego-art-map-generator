@@ -19,15 +19,15 @@ install: ## install dependencies
 	poetry install
 
 download_ne_data: ## Download data from natural earth
-	poetry run python lego_art_map_generator/natural_earth.py https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_land.zip data
-	poetry run python lego_art_map_generator/natural_earth.py https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip data
+	poetry run python map_download/natural_earth.py https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_land.zip data
+	poetry run python map_download/natural_earth.py https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip data
 
 readme_files:
-	poetry run python lego_art_map_generator/render_land_grayscale.py readme_files/land_grayscale.png
-	poetry run python lego_art_map_generator/render_land_grayscale.py readme_files/land_aliased.png --aliased
-	poetry run python lego_art_map_generator/convert_grayscale_to_1bit.py readme_files/land_grayscale.png readme_files/land_threshold.png --mode=threshold
-	poetry run python lego_art_map_generator/convert_grayscale_to_1bit.py readme_files/land_grayscale.png readme_files/land_dither.png --mode=dither
-	poetry run python lego_art_map_generator/convert_grayscale_to_1bit.py readme_files/land_grayscale.png readme_files/land_custom.png --mode=custom_1
+	poetry run python map_generator/step_1_land_grayscale_world_map.py readme_files/land_grayscale.png
+	poetry run python map_generator/step_1_land_grayscale_world_map.py readme_files/land_aliased.png --aliased
+	poetry run python map_generator/step_2_grayscale_to_1bit.py readme_files/land_grayscale.png readme_files/land_threshold.png --mode=threshold
+	poetry run python map_generator/step_2_grayscale_to_1bit.py readme_files/land_grayscale.png readme_files/land_dither.png --mode=dither
+	poetry run python map_generator/step_2_grayscale_to_1bit.py readme_files/land_grayscale.png readme_files/land_custom.png --mode=custom_1
 	convert readme_files/full_lego.png -filter box -resize 384x240 readme_files/full_lego_x3.png
 	convert readme_files/land_aliased.png -filter box -resize 384x240 readme_files/land_aliased_x3.png
 	convert readme_files/land_custom.png -filter box -resize 384x240 readme_files/land_custom_x3.png
