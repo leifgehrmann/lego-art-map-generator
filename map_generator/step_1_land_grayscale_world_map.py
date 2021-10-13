@@ -13,6 +13,9 @@ from shapely import ops
 from shapely.geometry import shape
 from shapely.geometry.base import BaseGeometry
 
+from map_generator.lego_projection_transformer_builder import \
+    LegoProjectionTransformerBuilder
+
 
 @click.command()
 @click.argument(
@@ -55,55 +58,13 @@ def render(dst: str, aliased: bool):
     land_shapes = parse_shapefile(land_shape_path)
     lake_shapes = parse_shapefile(lake_shape_path)
 
-    def lego_projection_transformer(
-            longitude: float,
-            latitude: float
-    ) -> Tuple[float, float]:
-        """
-        The Lego projection stretches the map vertically in a non-linear way,
-        and also applies a horizontal offset.
-        """
-        x_percentage = (longitude + 180) / 360
-        x_offset = CanvasUnit.from_px(-4)
-        x_canvas = x_percentage * canvas_width.pt + x_offset.pt
+    lego_projection_transformer_builder = LegoProjectionTransformerBuilder(
+        canvas_width,
+        canvas_height
+    )
 
-        # The latitude mappings below assume that the canvas height is 80px.
-        if latitude < -83:
-            min_latitude_range = -90
-            max_latitude_range = -83
-            # Add 1 to ensure the transformed polygon doesn't self-intersect.
-            min_y_range = CanvasUnit.from_px(80 + 1).pt
-            max_y_range = CanvasUnit.from_px(80).pt
-        elif latitude < -60:
-            min_latitude_range = -83
-            max_latitude_range = -60
-            min_y_range = CanvasUnit.from_px(80).pt
-            max_y_range = CanvasUnit.from_px(70).pt
-        elif latitude < -57:
-            min_latitude_range = -60
-            max_latitude_range = -57
-            min_y_range = CanvasUnit.from_px(70).pt
-            max_y_range = CanvasUnit.from_px(67).pt
-        elif latitude < 86:
-            min_latitude_range = -57
-            max_latitude_range = 86
-            min_y_range = CanvasUnit.from_px(67).pt
-            max_y_range = CanvasUnit.from_px(4).pt
-        elif latitude < 86:
-            min_latitude_range = 86
-            max_latitude_range = 86
-            min_y_range = CanvasUnit.from_px(4).pt
-            max_y_range = CanvasUnit.from_px(4).pt
-        else:
-            min_latitude_range = 86
-            max_latitude_range = 90
-            min_y_range = CanvasUnit.from_px(4).pt
-            max_y_range = CanvasUnit.from_px(0).pt
-
-        y_percentage = (latitude - min_latitude_range) / \
-                       (max_latitude_range - min_latitude_range)
-        y_canvas = y_percentage * (max_y_range - min_y_range) + min_y_range
-        return x_canvas, y_canvas
+    wgs84_to_lego_transformer = lego_projection_transformer_builder.\
+        build_wgs84_to_lego()
 
     def anti_meridian_transformer(x: float, y: float) -> Tuple[float, float]:
         # See `lego_projection_transformer()`
@@ -115,7 +76,7 @@ def render(dst: str, aliased: bool):
 
     # Transform array of polygons to canvas:
     def transform_geom_to_canvas(geom: BaseGeometry):
-        return ops.transform(lego_projection_transformer, geom)
+        return ops.transform(wgs84_to_lego_transformer, geom)
 
     def transform_anti_meridian(geom: BaseGeometry):
         return ops.transform(anti_meridian_transformer, geom)

@@ -6,3 +6,5 @@ output
 data/*.dbf
 data/*.shp
 data/*.tif
+
+*.pyc
