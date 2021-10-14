@@ -108,27 +108,28 @@ class LegoProjectionTransformerBuilder:
             self
     ) -> Callable[[float, float], Tuple[float, float]]:
         def wgs84_to_lego_transformer(
-                x_canvas: float,
-                y_canvas: float
+                x_canvas_px: float,
+                y_canvas_px: float
         ) -> Tuple[float, float]:
+            x_canvas = CanvasUnit.from_px(x_canvas_px).pt
+            y_canvas = CanvasUnit.from_px(y_canvas_px).pt
             x_offset = CanvasUnit.from_px(-4)
             x_percentage = (x_canvas - x_offset.pt) / self.canvas_width.pt
-            longitude = (x_percentage * 360 + 180) % 360 - 180
+            longitude = (x_percentage * 360 + 360) % 360 - 180
 
             min_latitude_range = None
             max_latitude_range = None
             min_y_range = None
             max_y_range = None
 
-            # The latitude mappings below assume that the canvas height is
-            # 80px.
             for stretch_band in self.stretch_bands:
                 if ((
-                        stretch_band['canvas_range_start'] <= y_canvas or
+                        stretch_band['canvas_range_start'] >= y_canvas or
                         isclose(stretch_band['canvas_range_start'], y_canvas)
-                ) and
-                        y_canvas < stretch_band['canvas_range_stop']
-                ):
+                ) and (
+                        y_canvas >= stretch_band['canvas_range_stop'] or
+                        isclose(stretch_band['canvas_range_stop'], y_canvas)
+                )):
                     min_latitude_range = stretch_band['latitude_range_start']
                     max_latitude_range = stretch_band['latitude_range_stop']
                     min_y_range = stretch_band['canvas_range_start']
@@ -143,11 +144,14 @@ class LegoProjectionTransformerBuilder:
             ):
                 raise Exception(
                     'Coordinate (%f, %f) could not be projected' %
-                    (x_canvas, y_canvas)
+                    (x_canvas_px, y_canvas_px)
                 )
 
-            y_percentage = (y_canvas - min_y_range) / (max_y_range - min_y_range)
-            latitude = y_percentage * (max_latitude_range - min_latitude_range) + min_latitude_range
+            y_percentage = (y_canvas - min_y_range)
+            y_percentage /= (max_y_range - min_y_range)
+            latitude = y_percentage
+            latitude *= (max_latitude_range - min_latitude_range)
+            latitude += min_latitude_range
             return longitude, latitude
 
         return wgs84_to_lego_transformer
