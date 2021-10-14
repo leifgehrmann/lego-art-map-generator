@@ -62,10 +62,6 @@ class LegoProjectionTransformerBuilder:
                 longitude: float,
                 latitude: float
         ) -> Tuple[float, float]:
-            """
-            The Lego projection stretches the map vertically in a non-linear
-            way, and also applies a horizontal offset.
-            """
             x_percentage = (longitude + 180) / 360
             x_offset = CanvasUnit.from_px(-4)
             x_canvas = x_percentage * self.canvas_width.pt + x_offset.pt
@@ -105,5 +101,53 @@ class LegoProjectionTransformerBuilder:
                            (max_latitude_range - min_latitude_range)
             y_canvas = y_percentage * (max_y_range - min_y_range) + min_y_range
             return x_canvas, y_canvas
+
+        return wgs84_to_lego_transformer
+
+    def build_lego_to_wgs84(
+            self
+    ) -> Callable[[float, float], Tuple[float, float]]:
+        def wgs84_to_lego_transformer(
+                x_canvas: float,
+                y_canvas: float
+        ) -> Tuple[float, float]:
+            x_offset = CanvasUnit.from_px(-4)
+            x_percentage = (x_canvas - x_offset.pt) / self.canvas_width.pt
+            longitude = (x_percentage * 360 + 180) % 360 - 180
+
+            min_latitude_range = None
+            max_latitude_range = None
+            min_y_range = None
+            max_y_range = None
+
+            # The latitude mappings below assume that the canvas height is
+            # 80px.
+            for stretch_band in self.stretch_bands:
+                if ((
+                        stretch_band['canvas_range_start'] <= y_canvas or
+                        isclose(stretch_band['canvas_range_start'], y_canvas)
+                ) and
+                        y_canvas < stretch_band['canvas_range_stop']
+                ):
+                    min_latitude_range = stretch_band['latitude_range_start']
+                    max_latitude_range = stretch_band['latitude_range_stop']
+                    min_y_range = stretch_band['canvas_range_start']
+                    max_y_range = stretch_band['canvas_range_stop']
+                    break
+
+            if (
+                    min_latitude_range is None or
+                    max_latitude_range is None or
+                    min_y_range is None or
+                    max_y_range is None
+            ):
+                raise Exception(
+                    'Coordinate (%f, %f) could not be projected' %
+                    (x_canvas, y_canvas)
+                )
+
+            y_percentage = (y_canvas - min_y_range) / (max_y_range - min_y_range)
+            latitude = y_percentage * (max_latitude_range - min_latitude_range) + min_latitude_range
+            return longitude, latitude
 
         return wgs84_to_lego_transformer
