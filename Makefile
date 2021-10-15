@@ -46,6 +46,7 @@ output_example:
 	poetry run python map_generator/step_1_land_grayscale_world_map.py output/example_step_1.png
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/example_step_1.png output/example_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/example_step_2.png output/example_step_3.png
+	poetry run python map_generator/step_4_sea_grayscale_world_map.py output/example_step_3.png output/example_step_4.png
 
 lint: ## Checks for linting errors
 	poetry run flake8
