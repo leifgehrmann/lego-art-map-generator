@@ -31,8 +31,8 @@ from map_generator.lego_projection_transformer_builder import \
 def render(dst: str, aliased: bool):
     # Specify the files to load, and where to save
     data_path = Path(__file__).parent.parent.joinpath('data')
-    land_shape_path = data_path.joinpath('ne_110m_land.shp')
-    lake_shape_path = data_path.joinpath('ne_110m_lakes.shp')
+    land_shape_path = data_path.joinpath('ne_110m_land/ne_110m_land.shp')
+    lake_shape_path = data_path.joinpath('ne_110m_lakes/ne_110m_lakes.shp')
     canvas_path = Path(dst)
     canvas_path.unlink(missing_ok=True)
 

@@ -124,14 +124,3 @@ How to run:
 ```console
 % poetry run python map_analysis/count_tiles_from_image.py ./readme_files/full_lego.png
 ```
-
-### natural_earth.py
-
-Downloads a zip file hosted on naturalearthdata.com and extracts the shape
-files to be used in maps.
-
-How to run:
-
-```
-% poetry run python map_download/natural_earth.py https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_land.zip data
-```

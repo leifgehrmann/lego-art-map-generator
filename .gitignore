@@ -3,8 +3,11 @@
 
 output
 
-data/*.dbf
-data/*.shp
-data/*.tif
+# Exclude anything from Natural Earth
+data/ne_*.zip
+data/ne_*/*
+# Exclude anything from GEBCO
+data/gebco_*/*
+data/gebco_*.zip
 
 *.pyc
