@@ -1,5 +1,5 @@
 from geotiff.geotiff import BoundaryNotInTifError
-from typing import List, TypedDict, Tuple
+from typing import List, Tuple
 
 from PIL import Image
 from map_engraver.canvas.canvas_unit import CanvasUnit
