@@ -54,7 +54,8 @@ def render(overlay: str, sea: str, dst: str):
             if overlay_image.getpixel((x, y)) == (0, 0, 0):
                 color_weight = sea_image.getpixel((x, y))[0]/255 * weight_range
                 color_index = 0
-                while len(sea_depth_color_weights) != color_index and color_weight > sea_depth_color_weights[color_index]:
+                while len(sea_depth_color_weights) != color_index and \
+                        color_weight > sea_depth_color_weights[color_index]:
                     color_weight -= sea_depth_color_weights[color_index]
                     color_index += 1
                 selected_color = sea_depth_colors[color_index - 1]
