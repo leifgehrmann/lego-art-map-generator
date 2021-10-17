@@ -43,8 +43,7 @@ def count(src):
             tile_name = get_tile_name_alias(tile_name)
             if tile_name not in tile_count:
                 tile_count[tile_name] = 0
-            else:
-                tile_count[tile_name] += 1
+            tile_count[tile_name] += 1
 
     # Print out the totals, sorted alphabetically
     for tile_name in [i for i in sorted(tile_count.keys())]:
