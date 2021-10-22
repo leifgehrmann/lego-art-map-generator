@@ -160,11 +160,7 @@ def render(overlay: str, sea: str, dst: str):
         # Reduce the probability of the color if one of its neighbors is the
         # same color.
         for neighbor_color in neighbor_colors:
-            weights[neighbor_color] *= min(
-                1.0,
-                sea_depth_color_count[neighbor_color] /
-                sea_depth_color_max_count[neighbor_color]
-            )
+            weights[neighbor_color] *= 0.8
 
         return random.choices(
             sea_depth_color_indexes,
