@@ -1,3 +1,5 @@
+import math
+
 from geotiff.geotiff import BoundaryNotInTifError
 from typing import List, Tuple
 
@@ -114,7 +116,7 @@ def render(mask: str, dst: str):
             value = (current_geotiff.read_box(
                 (coord, coord), outer_points=1
             )[0][0])
-            value = int(255 - (min(0, value) / -10511.0) * 255)
+            value = int(255 - math.ceil((min(0, value) / -10511.0) * 255))
             output_arr[output_y][output_x] = value
 
     # Convert the array to be a grayscale bitmap.
