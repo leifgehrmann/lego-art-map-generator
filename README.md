@@ -38,7 +38,7 @@ The total number of tiles for each color are listed below:
 | ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55)) | 529 | 601 | 621 |
 | ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16)) | 1019 | 1060 | 1106 |
 | ![Beige](https://img.shields.io/badge/-Beige-rgb(226,202,144)) | 724 | 725 | 752 |
-| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) | 598 | 599 | 619|
+| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) | 598 | 599 | 619 |
 | ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) | 229 | 601 | 625 |
 | ![Coral](https://img.shields.io/badge/-Coral-rgb(237,106,112)) | 203 | 601 | 627 |
 | **Total** | **10240** | **11130** | **11582** |
