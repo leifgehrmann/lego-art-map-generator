@@ -64,8 +64,8 @@ def read_brightness_tile_proportion_from_csv(
                     brightness_proportion_i
                 ]
                 brightness_proportion = float(brightness_proportions[
-                    brightness_proportion_i
-                ])
+                                                  brightness_proportion_i
+                                              ])
                 start_str, end_str = brightness_range_str.split('-')
                 start = int(start_str)
                 end = int(end_str)
@@ -97,10 +97,14 @@ def calculate_distribution_given_histogram(
             distribution[brightness] = {}
         tile_proportions = brightness_tile_proportions[brightness]
 
-        for tile in random.choices(
-            list(tile_proportions.keys()),
-            weights=list(tile_proportions.values()),
-            k=count
+        # Multiply the percentage by a thousand so we can get a representative
+        # sample of tiles.
+        tile_counts = [int(x * 1000) for x in tile_proportions.values()]
+
+        for tile in random.sample(
+                list(tile_proportions.keys()),
+                counts=tile_counts,
+                k=count
         ):
             if tile not in distribution[brightness]:
                 distribution[brightness][tile] = 0
@@ -133,7 +137,7 @@ def read_max_tile_counts_from_csv(
 
 def calculate_distribution_given_max_counts(
         brightness_tile_distribution: Dict[int, Dict[str, int]],
-        max_tile_count: Dict[str, int]
+        max_tile_counts: Dict[str, int]
 ) -> Dict[int, Dict[str, int]]:
     """
     Distribute max color values proportionally to each brightness value, each
@@ -148,8 +152,23 @@ def calculate_distribution_given_max_counts(
     indexed by color, with each value being the number of tiles
     """
     output = {}
+    brightnesses = brightness_tile_distribution.keys()
+    tiles = max_tile_counts.keys()
 
-    # Transpose the distribution dict for easy calculations later on.
+    for brightness in brightnesses:
+        output[brightness] = {}
+
+    used_brightnesses_count = {}
+    for brightness in brightnesses:
+        used_brightnesses_count[brightness] = 0
+
+    used_tiles_count = {}
+    for tile in tiles:
+        used_tiles_count[tile] = 0
+
+    total_tiles_to_use = 0
+    # Transpose the distribution dict for easy calculations later on. And also
+    # count how many tiles we need to distribute.
     tile_brightness_distribution = {}
     for brightness, tile_distributions in brightness_tile_distribution.items():
         for tile, distribution in tile_distributions.items():
@@ -157,20 +176,88 @@ def calculate_distribution_given_max_counts(
                 tile_brightness_distribution[tile] = {}
             if brightness not in tile_brightness_distribution[tile]:
                 tile_brightness_distribution[tile][brightness] = distribution
+            total_tiles_to_use += distribution
+
+    tiles = max_tile_counts.keys()
+    used_tiles_total = 0
+    while used_tiles_total < total_tiles_to_use:
+        # Select a tile based on the initial expected distribution
+        tile_weights = {}
+        for tile in tiles:
+            # The estimated tile count
+            est_tile_count = sum(tile_brightness_distribution[tile].values())
+            used_tile_count = used_tiles_count[tile]
+            max_tile_count = max_tile_counts[tile]
+            percent_left_over = 1 - used_tile_count / max_tile_count
+            # The math here is a bit dubious... The probability of selecting
+            # the same tile will decrease as the percent of each tile being
+            # used increases, but not at a rate similar to randomly choosing
+            # from a place without replacement.
+            tile_weights[tile] = percent_left_over * est_tile_count
+
+        selected_tile = random.choices(
+            list(tile_weights.keys()), weights=list(tile_weights.values())
+        )[0]
+
+        # Now select a brightness "bucket" that is not filled, and also has
+
+        brightness_weights = {}
+        for brightness, tile_distributions in \
+                brightness_tile_distribution.items():
+            est_count = 0.0001
+            if selected_tile in brightness_tile_distribution[brightness]:
+                est_count = \
+                    brightness_tile_distribution[brightness][selected_tile]
+            max_count = sum(brightness_tile_distribution[brightness].values())
+            used_count = used_brightnesses_count[brightness]
+            percent_left_over = 1 - used_count / max_count
+            brightness_weights[brightness] = percent_left_over * est_count
+
+        selected_brightness = random.choices(
+            list(brightness_weights.keys()),
+            weights=list(brightness_weights.values())
+        )[0]
+
+        used_tiles_count[selected_tile] += 1
+        used_brightnesses_count[selected_brightness] += 1
+        used_tiles_total += 1
+
+        if selected_tile not in output[selected_brightness]:
+            output[selected_brightness][selected_tile] = 0
+        output[selected_brightness][selected_tile] += 1
 
     return output
 
 
 def render_image(
+        brightness_image_path: Path,
         overlay_image_path: Path,
         brightness_tile_distribution: Dict[int, Dict[str, int]],
         output_image_path: Path
 ):
+    brightness_image = Image.open(
+        brightness_image_path.as_posix()
+    ).convert('RGB')
     output_image = Image.open(
         overlay_image_path.as_posix()
     ).convert('RGB')
 
-    # Todo
+    for y in range(output_image.height):
+        for x in range(output_image.width):
+            # Skip pixels where the image already has content.
+            if output_image.getpixel((x, y)) != (0, 0, 0):
+                continue
+            brightness = brightness_image.getpixel((x, y))[0]
+            tiles = list(brightness_tile_distribution[brightness].keys())
+            tile_weights = list(
+                brightness_tile_distribution[brightness].values()
+            )
+            tile = random.choices(tiles, weights=tile_weights, k=1)[0]
+
+            brightness_tile_distribution[brightness][tile] -= 1
+
+            color = tuple([int(x) for x in tile.split(',')])
+            output_image.putpixel((x, y), color)
 
     output_image.save(output_image_path.as_posix())
 
@@ -236,6 +323,7 @@ def render(
         )
 
     render_image(
+        Path(brightness_image),
         Path(overlay_image),
         brightness_tile_actual_distribution,
         Path(output_image)
