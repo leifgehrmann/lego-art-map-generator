@@ -48,13 +48,48 @@ def save_csv(
 
         # Print out the totals, sorted alphabetically
         for tile_name in [i for i in sorted(tile_count.keys())]:
-            row = [tile_name]
+            row = [get_tile_name_alias(tile_name)]
             for sea_value in range(2 ** 8):
                 if sea_value not in tile_count[tile_name]:
                     row.append(0)
                 else:
                     row.append(tile_count[tile_name][sea_value])
             writer.writerow(row)
+
+
+def transpose(
+        tile_brightness_distribution: Dict[str, Dict[int, int]]
+) -> Dict[int, Dict[str, int]]:
+    brightness_tile_distribution = {}
+    for tile, brightness_distributions in tile_brightness_distribution.items():
+        for brightness, distribution in brightness_distributions.items():
+            if brightness not in brightness_tile_distribution:
+                brightness_tile_distribution[brightness] = {}
+            if tile not in brightness_tile_distribution[brightness]:
+                brightness_tile_distribution[brightness][tile] = distribution
+    return brightness_tile_distribution
+
+
+def save_image(
+        tile_count: Dict[str, Dict[int, int]],
+        dst_path: Path
+) -> None:
+    brightness_range = 256
+    max_height = 256
+
+    brightness_count = transpose(tile_count)
+    img = Image.new('RGB', (brightness_range, max_height), color=0)
+    for brightness in [i for i in sorted(brightness_count.keys())]:
+        y_offset = 0
+        for tile in [i for i in sorted(brightness_count[brightness].keys())]:
+            rgb = tuple([int(b) for b in tile.split(',')])
+            amount = brightness_count[brightness][tile]
+            for y in range(y_offset, y_offset + amount):
+                if y < img.height:
+                    img.putpixel((brightness, y), rgb)
+            y_offset += amount
+
+    img.save(dst_path.as_posix())
 
 
 @click.command()
@@ -92,7 +127,6 @@ def count(tile, sea, dst, image):
         for x in range(tile_image.width):
             tile_name = "%d,%d,%d" % tile_image.getpixel((x, y))
             sea_value = sea_image.getpixel((x, y))[0]
-            tile_name = get_tile_name_alias(tile_name)
             if tile_name not in tile_count:
                 tile_count[tile_name] = {}
             if sea_value not in tile_count[tile_name]:
@@ -104,7 +138,10 @@ def count(tile, sea, dst, image):
             tile_total_count[sea_value] += 1
 
     if image:
-        pass
+        save_image(
+            tile_count,
+            Path(dst)
+        )
     else:
         save_csv(
             tile_count,
