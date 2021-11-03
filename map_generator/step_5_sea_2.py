@@ -4,7 +4,7 @@ import random
 import click
 from pathlib import Path
 
-from typing import Dict
+from typing import Dict, Tuple, Iterator
 
 from PIL import Image
 
@@ -229,6 +229,24 @@ def calculate_distribution_given_max_counts(
     return output
 
 
+def raster_odd_iterator(
+        width: int,
+        height: int
+) -> Iterator[Tuple[int, int]]:
+    for i_h in range(height):
+        for i_w in range(int(width / 2)):
+            x = (i_w * 2 + i_h % 2)
+            y = i_h
+            if x < width:
+                yield x, y
+    for i_h in range(height):
+        for i_w in range(int(width / 2)):
+            x = (i_w * 2 + (i_h + 1) % 2)
+            y = i_h
+            if x < width:
+                yield x, y
+
+
 def render_image(
         brightness_image_path: Path,
         overlay_image_path: Path,
@@ -242,22 +260,21 @@ def render_image(
         overlay_image_path.as_posix()
     ).convert('RGB')
 
-    for y in range(output_image.height):
-        for x in range(output_image.width):
-            # Skip pixels where the image already has content.
-            if output_image.getpixel((x, y)) != (0, 0, 0):
-                continue
-            brightness = brightness_image.getpixel((x, y))[0]
-            tiles = list(brightness_tile_distribution[brightness].keys())
-            tile_weights = list(
-                brightness_tile_distribution[brightness].values()
-            )
-            tile = random.choices(tiles, weights=tile_weights, k=1)[0]
+    for x, y in raster_odd_iterator(output_image.width, output_image.height):
+        # Skip pixels where the image already has content.
+        if output_image.getpixel((x, y)) != (0, 0, 0):
+            continue
+        brightness = brightness_image.getpixel((x, y))[0]
+        tiles = list(brightness_tile_distribution[brightness].keys())
+        tile_weights = list(
+            brightness_tile_distribution[brightness].values()
+        )
+        tile = random.choices(tiles, weights=tile_weights, k=1)[0]
 
-            brightness_tile_distribution[brightness][tile] -= 1
+        brightness_tile_distribution[brightness][tile] -= 1
 
-            color = tuple([int(x) for x in tile.split(',')])
-            output_image.putpixel((x, y), color)
+        color = tuple([int(x) for x in tile.split(',')])
+        output_image.putpixel((x, y), color)
 
     output_image.save(output_image_path.as_posix())
 
