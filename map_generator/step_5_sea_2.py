@@ -4,7 +4,7 @@ import random
 import click
 from pathlib import Path
 
-from typing import Dict, Tuple, Iterator
+from typing import Dict, Tuple, Iterator, List
 
 from PIL import Image
 
@@ -247,6 +247,29 @@ def raster_odd_iterator(
                 yield x, y
 
 
+def get_neighboring_colors(
+        image: Image,
+        x: int,
+        y: int
+) -> List[Tuple[int, int, int]]:
+    colors = []
+    neighbor_positions = []
+    if x + 1 < image.width:
+        neighbor_positions.append(((x + 1) % image.width, y))
+    if x - 1 >= 0:
+        neighbor_positions.append(((x - 1) % image.width, y))
+    if y + 1 < image.height:
+        neighbor_positions.append((x, (y + 1) % image.width))
+    if y - 1 >= 0:
+        neighbor_positions.append((x, (y - 1) % image.width))
+    for pos in neighbor_positions:
+        try:
+            colors.append(image.getpixel((pos[0], pos[1])))
+        except ValueError:
+            continue
+    return colors
+
+
 def render_image(
         brightness_image_path: Path,
         overlay_image_path: Path,
@@ -269,11 +292,24 @@ def render_image(
         tile_weights = list(
             brightness_tile_distribution[brightness].values()
         )
+
         tile = random.choices(tiles, weights=tile_weights, k=1)[0]
+        color = tuple([int(x) for x in tile.split(',')])
+
+        neighbor_colors = get_neighboring_colors(output_image, x, y)
+        # Re-roll selection if more than two neighboring tiles are the same
+        # color.
+        if len(list(filter(lambda c: c == color, neighbor_colors))) > 1:
+            tile = random.choices(tiles, weights=tile_weights, k=1)[0]
+            color = tuple([int(x) for x in tile.split(',')])
+            neighbor_colors = get_neighboring_colors(output_image, x, y)
+
+        if len(list(filter(lambda c: c == color, neighbor_colors))) > 1:
+            tile = random.choices(tiles, weights=tile_weights, k=1)[0]
+            color = tuple([int(x) for x in tile.split(',')])
 
         brightness_tile_distribution[brightness][tile] -= 1
 
-        color = tuple([int(x) for x in tile.split(',')])
         output_image.putpixel((x, y), color)
 
     output_image.save(output_image_path.as_posix())
