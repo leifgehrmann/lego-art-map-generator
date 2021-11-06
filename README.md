@@ -30,17 +30,17 @@ you are given 3062 white tiles, and only have 2 unused tile left to spare.
 The total number of tiles for each color are listed below:
 
 | Tile color | # of tiles required for World Map | # of tiles in box set according to booklet | Actual # of tiles in my box |
-|---|---|---|---|
-| ![White](https://img.shields.io/badge/-White-snow) | 3062 | 3064 | 3198 |
-| ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91)) | 392 | 393 | 410 |
-| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210)) | 1606 | 1607 | 1668 |
-| ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150)) | 1878 | 1879 | 1956 |
-| ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55)) | 529 | 601 | 621 |
-| ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16)) | 1019 | 1060 | 1106 |
-| ![Beige](https://img.shields.io/badge/-Beige-rgb(226,202,144)) | 724 | 725 | 752 |
-| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) | 598 | 599 | 619 |
-| ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) | 229 | 601 | 625 |
-| ![Coral](https://img.shields.io/badge/-Coral-rgb(237,106,112)) | 203 | 601 | 627 |
+|----------------------------------------------------------------|------|------|------|
+| ![White](https://img.shields.io/badge/-White-snow)             | 3062 | 3064 | 3198 |
+| ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91))       |  392 |  393 |  410 |
+| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210))    | 1606 | 1607 | 1668 |
+| ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150))     | 1878 | 1879 | 1956 |
+| ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55))    |  529 |  601 |  621 |
+| ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16))  | 1019 | 1060 | 1106 |
+| ![Beige](https://img.shields.io/badge/-Beige-rgb(226,202,144)) |  724 |  725 |  752 |
+| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) |  598 |  599 |  619 |
+| ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) |  229 |  601 |  625 |
+| ![Coral](https://img.shields.io/badge/-Coral-rgb(237,106,112)) |  203 |  601 |  627 |
 | **Total** | **10240** | **11130** | **11582** |
 
 I also collected statistics on individual bags that I found in my set.
