@@ -28,7 +28,12 @@ from map_generator.lego_projection_transformer_builder import \
     default=False,
     help='Disables anti-aliasing when rendering the image.'
 )
-def render(dst: str, aliased: bool):
+@click.option(
+    "--pixel-scale-factor",
+    default=1,
+    help='Controls the size of the image'
+)
+def render(dst: str, aliased: bool, pixel_scale_factor: int):
     # Specify the files to load, and where to save
     data_path = Path(__file__).parent.parent.joinpath('data')
     land_shape_path = data_path.joinpath('ne_110m_land/ne_110m_land.shp')
@@ -42,6 +47,7 @@ def render(dst: str, aliased: bool):
     canvas_width = CanvasUnit.from_px(128)
     canvas_height = CanvasUnit.from_px(80)
     canvas_builder.set_size(canvas_width, canvas_height)
+    canvas_builder.set_pixel_scale_factor(pixel_scale_factor)
     canvas = canvas_builder.build()
 
     if aliased:
