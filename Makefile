@@ -23,6 +23,10 @@ download_ne_data: ## Download data from natural earth
 	unzip -o -d data/ne_110m_land data/ne_110m_land.zip
 	curl -o data/ne_110m_lakes.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip
 	unzip -o -d data/ne_110m_lakes data/ne_110m_lakes.zip
+	curl -o data/ne_10m_land.zip https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_land.zip
+	unzip -o -d data/ne_10m_land data/ne_10m_land.zip
+	curl -o data/ne_10m_lakes.zip https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_lakes.zip
+	unzip -o -d data/ne_10m_lakes data/ne_10m_lakes.zip
 
 download_gebco_data: ## Download data from gebco.net
 	curl -o data/gebco_2021_sub_ice_topo_geotiff.zip https://www.bodc.ac.uk/data/open_download/gebco/gebco_2021_sub_ice_topo/geotiff/
