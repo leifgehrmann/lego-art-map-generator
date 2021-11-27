@@ -1,15 +1,14 @@
 from typing import Tuple, Callable
 
-from map_engraver.canvas.canvas_unit import CanvasUnit
-
 
 class UtmProjectionTransformerBuilder:
 
     def __init__(
             self,
-            canvas_width: CanvasUnit,
-            canvas_height: CanvasUnit,
-            center_coordinate: Tuple[float, float],
+            canvas_width: int,
+            canvas_height: int,
+            center_longitude: float,
+            center_latitude: float,
             scale: float,
             rotation: float
     ):

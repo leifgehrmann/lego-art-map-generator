@@ -13,8 +13,49 @@ from shapely import ops
 from shapely.geometry import shape
 from shapely.geometry.base import BaseGeometry
 
-from map_generator.lego_projection_transformer_builder import \
-    LegoProjectionTransformerBuilder
+from map_generator.utm_projection_transformer_builder import \
+    UtmProjectionTransformerBuilder
+
+
+def parse_size(size: str) -> Tuple[int, int]:
+    split_size = size.split(',')
+
+    if len(split_size) != 0:
+        raise ValueError(
+            'Unexpected size format. Expected 2, found %s' % len(split_size)
+        )
+
+    if not (0 < int(split_size[0])) or not (0 < int(split_size[1])):
+        raise ValueError(
+            'Unexpected size format. Expected positive integers'
+        )
+
+    return int(split_size[0]), int(split_size[1])
+
+
+def parse_center(center: str) -> Tuple[float, float]:
+    split_center = center.split(',')
+
+    if len(split_center) != 0:
+        raise ValueError(
+            'Unexpected center coordinate format. '
+            'Expected 2, found %s' % len(split_center)
+        )
+
+    longitude = float(split_center[0])
+    latitude = float(split_center[1])
+    if not (-180 < longitude < 180):
+        raise ValueError(
+            'Unexpected center longitude. '
+            'Expected value between -180,180, found %f' % longitude
+        )
+    if not (-90 < latitude < 90):
+        raise ValueError(
+            'Unexpected center latitude. '
+            'Expected value between -90,90, found %f' % latitude
+        )
+
+    return longitude, latitude
 
 
 @click.command()
@@ -65,11 +106,14 @@ def render(
     canvas_path = Path(dst)
     canvas_path.unlink(missing_ok=True)
 
+    canvas_size_in_pixels = parse_size(size)
+    center_coordinate = parse_center(center)
+
     # Create the canvas
     canvas_builder = CanvasBuilder()
     canvas_builder.set_path(canvas_path)
-    canvas_width = CanvasUnit.from_px(128)
-    canvas_height = CanvasUnit.from_px(80)
+    canvas_width = CanvasUnit.from_px(canvas_size_in_pixels[0])
+    canvas_height = CanvasUnit.from_px(canvas_size_in_pixels[1])
     canvas_builder.set_size(canvas_width, canvas_height)
     canvas_builder.set_pixel_scale_factor(pixel_scale_factor)
     canvas = canvas_builder.build()
@@ -88,13 +132,17 @@ def render(
     land_shapes = parse_shapefile(land_shape_path)
     lake_shapes = parse_shapefile(lake_shape_path)
 
-    lego_projection_transformer_builder = LegoProjectionTransformerBuilder(
-        canvas_width,
-        canvas_height
+    lego_projection_transformer_builder = UtmProjectionTransformerBuilder(
+        int(canvas_width.px),
+        int(canvas_height.px),
+        center_coordinate[0],
+        center_coordinate[1],
+        float(scale),
+        float(rotation)
     )
 
     wgs84_to_lego_transformer = lego_projection_transformer_builder.\
-        build_wgs84_to_lego()
+        build_wgs84_to_utm_on_canvas()
 
     def anti_meridian_transformer(x: float, y: float) -> Tuple[float, float]:
         # See `lego_projection_transformer()`
