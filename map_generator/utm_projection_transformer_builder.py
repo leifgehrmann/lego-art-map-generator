@@ -73,11 +73,11 @@ class UtmProjectionTransformerBuilder:
 
             # Scale
             x /= self.scale
-            y /= self.scale
+            y /= -self.scale
 
             # Rotate
-            x_rot = x * math.cos(rotation_rad) + y * math.sin(rotation_rad)
-            y_rot = y * math.cos(rotation_rad) + x * math.sin(rotation_rad)
+            x_rot = x * math.cos(rotation_rad) - y * math.sin(rotation_rad)
+            y_rot = x * math.sin(rotation_rad) + y * math.cos(rotation_rad)
 
             # Translate
             return (
@@ -110,13 +110,13 @@ class UtmProjectionTransformerBuilder:
         ) -> Tuple[float, float]:
             # Undo translation
             x_rot = x_canvas_px - self.canvas_width / 2
-            y_rot = y_canvas_px - self.canvas_width / 2
+            y_rot = y_canvas_px - self.canvas_height / 2
             # Undo rotation
-            x = x_rot * math.cos(-rotation_rad) + y_rot * math.sin(-rotation_rad)
-            y = y_rot * math.cos(-rotation_rad) + x_rot * math.sin(-rotation_rad)
+            x = x_rot * math.cos(-rotation_rad) - y_rot * math.sin(-rotation_rad)
+            y = x_rot * math.sin(-rotation_rad) + y_rot * math.cos(-rotation_rad)
             # Undo scale
             x *= self.scale
-            y *= self.scale
+            y *= -self.scale
             # Undo origin
             x += center_x
             y += center_y
