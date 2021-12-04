@@ -10,7 +10,7 @@ from map_engraver.canvas.canvas_unit import CanvasUnit
 from map_engraver.drawable.geometry.polygon_drawer import PolygonDrawer
 from map_engraver.drawable.layout.background import Background
 from shapely import ops
-from shapely.geometry import shape
+from shapely.geometry import shape, Polygon
 from shapely.geometry.base import BaseGeometry
 
 from map_generator.utm_projection_transformer_builder import \
@@ -20,7 +20,7 @@ from map_generator.utm_projection_transformer_builder import \
 def parse_size(size: str) -> Tuple[int, int]:
     split_size = size.split(',')
 
-    if len(split_size) != 0:
+    if len(split_size) != 2:
         raise ValueError(
             'Unexpected size format. Expected 2, found %s' % len(split_size)
         )
@@ -36,7 +36,7 @@ def parse_size(size: str) -> Tuple[int, int]:
 def parse_center(center: str) -> Tuple[float, float]:
     split_center = center.split(',')
 
-    if len(split_center) != 0:
+    if len(split_center) != 2:
         raise ValueError(
             'Unexpected center coordinate format. '
             'Expected 2, found %s' % len(split_center)
@@ -141,32 +141,35 @@ def render(
         float(rotation)
     )
 
-    wgs84_to_lego_transformer = lego_projection_transformer_builder.\
-        build_wgs84_to_utm_on_canvas()
+    # We need to cull polygons outside of the bbox, which this thing achieves
+    bbox = lego_projection_transformer_builder.get_wgs84_bbox()
+    wgs84_bbox_polygon = Polygon([
+        [bbox[0], bbox[1]],
+        [bbox[2], bbox[1]],
+        [bbox[2], bbox[3]],
+        [bbox[0], bbox[3]],
+        [bbox[0], bbox[1]],
+    ])
 
-    def anti_meridian_transformer(x: float, y: float) -> Tuple[float, float]:
-        # See `lego_projection_transformer()`
-        x_offset = CanvasUnit.from_px(-4)
-        if x_offset.pt > 0:
-            return (x - canvas_width.pt), y
-        else:
-            return (x + canvas_width.pt), y
+    def cull_geom(geom: BaseGeometry):
+        return geom.intersection(wgs84_bbox_polygon)
+
+    wgs84_to_utm_canvas_transformer = lego_projection_transformer_builder\
+        .build_wgs84_to_utm_on_canvas()
 
     # Transform array of polygons to canvas:
     def transform_geom_to_canvas(geom: BaseGeometry):
-        return ops.transform(wgs84_to_lego_transformer, geom)
-
-    def transform_anti_meridian(geom: BaseGeometry):
-        return ops.transform(anti_meridian_transformer, geom)
+        return ops.transform(wgs84_to_utm_canvas_transformer, geom)
 
     def transform_geoms_to_canvas(
         geoms: List[BaseGeometry]
     ) -> List[BaseGeometry]:
-        # Because the world wraps along the anti-meridian, we need the exact
-        # same polygons shifted by the canvas's width.
-        left_geoms = list(map(transform_geom_to_canvas, geoms))
-        right_geoms = list(map(transform_anti_meridian, left_geoms))
-        return left_geoms + right_geoms
+        geoms = list(map(cull_geom, geoms))
+        # After culling geoms, we might end up with empty objects, so we filter
+        # those objects out from the list
+        geoms = list(filter(lambda geom: not geom.is_empty, geoms))
+        geoms = list(map(transform_geom_to_canvas, geoms))
+        return geoms
 
     land_shapes = transform_geoms_to_canvas(land_shapes)
     lake_shapes = transform_geoms_to_canvas(lake_shapes)
