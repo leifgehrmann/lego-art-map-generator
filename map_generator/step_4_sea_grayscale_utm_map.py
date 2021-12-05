@@ -126,13 +126,19 @@ def lookup_coord_in_geotiffs(coord: Coord, geotiffs: List[GeoTiff]) -> GeoTiff:
     "--rotation",
     help='The rotation around the center of the map in degrees.'
 )
+@click.option(
+    "--max-depth",
+    default="10511",
+    help='The maximum depth to calculate sea depth from.'
+)
 def render(
         mask: str,
         dst: str,
         size: str,
         center: str,
         scale: str,
-        rotation: str
+        rotation: str,
+        max_depth: str
 ):
     # Load the land + shadow mask map, to skip cells we know we don't need to
     # render over.
@@ -143,6 +149,7 @@ def render(
 
     canvas_size_in_pixels = parse_size(size)
     center_coordinate = parse_center(center)
+    max_depth = int(max_depth)
 
     canvas_width = CanvasUnit.from_px(canvas_size_in_pixels[0])
     canvas_height = CanvasUnit.from_px(canvas_size_in_pixels[1])
@@ -187,7 +194,9 @@ def render(
             value = (current_geotiff.read_box(
                 (coord, coord), outer_points=1
             )[0][0])
-            value = int(255 - math.ceil((min(0, value) / -10511.0) * 255))
+            value = int(max(
+                0, 255 - math.floor((min(0, value) / -max_depth) * 255)
+            ))
             output_arr[output_y][output_x] = value
 
     # Convert the array to be a grayscale bitmap.
