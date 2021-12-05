@@ -132,7 +132,7 @@ def render(
     land_shapes = parse_shapefile(land_shape_path)
     lake_shapes = parse_shapefile(lake_shape_path)
 
-    lego_projection_transformer_builder = UtmProjectionTransformerBuilder(
+    utm_projection_transformer_builder = UtmProjectionTransformerBuilder(
         int(canvas_width.px),
         int(canvas_height.px),
         center_coordinate[0],
@@ -142,7 +142,7 @@ def render(
     )
 
     # We need to cull polygons outside of the bbox, which this thing achieves
-    bbox = lego_projection_transformer_builder.get_wgs84_bbox()
+    bbox = utm_projection_transformer_builder.get_wgs84_bbox()
     wgs84_bbox_polygon = Polygon([
         [bbox[0], bbox[1]],
         [bbox[2], bbox[1]],
@@ -154,7 +154,7 @@ def render(
     def cull_geom(geom: BaseGeometry):
         return geom.intersection(wgs84_bbox_polygon)
 
-    wgs84_to_utm_canvas_transformer = lego_projection_transformer_builder\
+    wgs84_to_utm_canvas_transformer = utm_projection_transformer_builder\
         .build_wgs84_to_utm_on_canvas()
 
     # Transform array of polygons to canvas:
