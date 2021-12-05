@@ -133,8 +133,8 @@ def render(
     lake_shapes = parse_shapefile(lake_shape_path)
 
     utm_projection_transformer_builder = UtmProjectionTransformerBuilder(
-        int(canvas_width.px),
-        int(canvas_height.px),
+        canvas_width,
+        canvas_height,
         center_coordinate[0],
         center_coordinate[1],
         float(scale),

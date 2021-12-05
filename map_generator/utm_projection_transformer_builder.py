@@ -1,6 +1,7 @@
 import math
 from typing import Tuple, Callable
 
+from map_engraver.canvas.canvas_unit import CanvasUnit
 from pyproj import CRS, Transformer
 from pyproj.aoi import AreaOfInterest
 from pyproj.database import query_utm_crs_info
@@ -10,8 +11,8 @@ class UtmProjectionTransformerBuilder:
 
     def __init__(
             self,
-            canvas_width: int,
-            canvas_height: int,
+            canvas_width: CanvasUnit,
+            canvas_height: CanvasUnit,
             center_longitude: float,
             center_latitude: float,
             scale: float,
@@ -39,9 +40,9 @@ class UtmProjectionTransformerBuilder:
     def get_wgs84_bbox(self) -> Tuple[float, float, float, float]:
         transformer = self.build_utm_on_canvas_to_wgs84()
         pos_tl = transformer(0, 0)
-        pos_tr = transformer(self.canvas_width, 0)
-        pos_bl = transformer(0, self.canvas_height)
-        pos_br = transformer(self.canvas_width, self.canvas_height)
+        pos_tr = transformer(self.canvas_width.px, 0)
+        pos_bl = transformer(0, self.canvas_height.px)
+        pos_br = transformer(self.canvas_width.px, self.canvas_height.px)
         min_lon = min(pos_tl[0], pos_tr[0], pos_bl[0], pos_br[0])
         max_lon = max(pos_tl[0], pos_tr[0], pos_bl[0], pos_br[0])
         min_lat = min(pos_tl[1], pos_tr[1], pos_bl[1], pos_br[1])
@@ -81,8 +82,8 @@ class UtmProjectionTransformerBuilder:
 
             # Translate
             return (
-                    x_rot + self.canvas_width / 2,
-                    y_rot + self.canvas_height / 2
+                    x_rot + self.canvas_width.pt / 2,
+                    y_rot + self.canvas_height.pt / 2
             )
 
         return transformer
@@ -109,8 +110,8 @@ class UtmProjectionTransformerBuilder:
                 y_canvas_px: float
         ) -> Tuple[float, float]:
             # Undo translation
-            x_rot = x_canvas_px - self.canvas_width / 2
-            y_rot = y_canvas_px - self.canvas_height / 2
+            x_rot = x_canvas_px - self.canvas_width.px / 2
+            y_rot = y_canvas_px - self.canvas_height.px / 2
             # Undo rotation
             x = x_rot * math.cos(-rotation_rad) - y_rot * math.sin(-rotation_rad)
             y = x_rot * math.sin(-rotation_rad) + y_rot * math.cos(-rotation_rad)

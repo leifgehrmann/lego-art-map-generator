@@ -150,8 +150,8 @@ def render(
     # For each position on the map, lookup the bathymetric value at that exact
     # position and store in the array.
     utm_projection_transformer_builder = UtmProjectionTransformerBuilder(
-        int(canvas_width.px),
-        int(canvas_height.px),
+        canvas_width,
+        canvas_height,
         center_coordinate[0],
         center_coordinate[1],
         float(scale),
