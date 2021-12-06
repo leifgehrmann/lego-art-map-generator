@@ -82,8 +82,8 @@ class UtmProjectionTransformerBuilder:
 
             # Translate
             return (
-                    x_rot + self.canvas_width.pt / 2,
-                    y_rot + self.canvas_height.pt / 2
+                    CanvasUnit.from_px(x_rot).pt + self.canvas_width.pt / 2,
+                    CanvasUnit.from_px(y_rot).pt + self.canvas_height.pt / 2
             )
 
         return transformer
