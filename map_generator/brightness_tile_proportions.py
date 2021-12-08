@@ -46,20 +46,15 @@ class BrightnessTileProportions:
                     # Back-fill any values
                     if last_end != start:
                         for brightness in range(last_end, start):
-                            print(brightness, last_end, start)
                             if brightness not in proportions:
                                 proportions[brightness] = {}
                             interpolated_perc = (brightness - last_end) / (
                                     start - last_end)
-                            print('intperc',interpolated_perc)
                             last_end_prop = proportions[
                                 last_end][tile]
                             interpolated_prop = \
                                 (brightness_proportion - last_end_prop) * \
                                 interpolated_perc + last_end_prop
-                            print('last', last_end_prop)
-                            print('start', brightness_proportion)
-                            print('intprop', interpolated_prop)
                             proportions[brightness][tile] = interpolated_prop
 
                     for brightness in range(start, end + 1):
