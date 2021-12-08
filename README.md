@@ -31,7 +31,7 @@ The total number of tiles for each color are listed below:
 
 | Tile color | # of tiles required for World Map | # of tiles in box set according to booklet | Actual # of tiles in my box |
 |----------------------------------------------------------------|------|------|------|
-| ![White](https://img.shields.io/badge/-White-snow)             | 3062 | 3064 | 3198 |
+| ![White](https://img.shields.io/badge/-White-rgb(255,255,255))             | 3062 | 3064 | 3198 |
 | ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91))       |  392 |  393 |  410 |
 | ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210))    | 1606 | 1607 | 1668 |
 | ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150))     | 1878 | 1879 | 1956 |
