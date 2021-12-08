@@ -54,9 +54,12 @@ output_example:
 	poetry run python map_generator/step_5_sea_2.py output/example_step_3.png output/example_step_4.png data/world_map_brightness_tile_proportion_2.csv data/world_map_max_tile_counts.csv output/example_step_5.png
 
 north_sea_example:
-	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/example_utm_step_1.png --size=80,128 --center=4.238,57.02056767902137 --scale=15000 --rotation=15
-	poetry run python map_generator/step_2_grayscale_to_1bit.py output/example_utm_step_1.png output/example_utm_step_2.png --mode=custom_1
-	poetry run python map_generator/step_3_land_shadow.py output/example_utm_step_2.png output/example_utm_step_3.png
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/north_sea_step_1_x4.png --size=80,128 --center=1.8,58.8 --scale=15000 --rotation=25 --pixel-scale-factor=4
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/north_sea_step_1.png --size=80,128 --center=1.8,58.8 --scale=15000 --rotation=25
+	poetry run python map_generator/step_2_grayscale_to_1bit.py output/north_sea_step_1.png output/north_sea_step_2.png --mode=custom_1
+	poetry run python map_generator/step_3_land_shadow.py output/north_sea_step_2.png output/north_sea_step_3.png
+	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/north_sea_step_3.png output/north_sea_step_4.png --size=80,128 --center=1.8,58.8 --scale=15000 --rotation=25 --max-depth=3500
+	poetry run python map_generator/step_5_sea_2.py output/north_sea_step_3.png output/north_sea_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/north_sea_step_5.png
 
 lint: ## Checks for linting errors
 	poetry run flake8
