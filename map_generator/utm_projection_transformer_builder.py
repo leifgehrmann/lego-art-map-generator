@@ -129,8 +129,10 @@ class UtmProjectionTransformerBuilder:
             x_rot = x_canvas_px - self.canvas_width.px / 2
             y_rot = y_canvas_px - self.canvas_height.px / 2
             # Undo rotation
-            x = x_rot * math.cos(-rotation_rad) - y_rot * math.sin(-rotation_rad)
-            y = x_rot * math.sin(-rotation_rad) + y_rot * math.cos(-rotation_rad)
+            x = x_rot * math.cos(-rotation_rad) - y_rot * math.sin(
+                -rotation_rad)
+            y = x_rot * math.sin(-rotation_rad) + y_rot * math.cos(
+                -rotation_rad)
             # Undo scale
             x *= self.scale
             y *= -self.scale
