@@ -40,13 +40,29 @@ class UtmProjectionTransformerBuilder:
     def get_wgs84_bbox(self) -> Tuple[float, float, float, float]:
         transformer = self.build_utm_on_canvas_to_wgs84()
         pos_tl = transformer(0, 0)
+        pos_tc = transformer(self.canvas_width.px / 2, 0)
         pos_tr = transformer(self.canvas_width.px, 0)
+        pos_cl = transformer(0, self.canvas_height.px / 2)
+        pos_cr = transformer(self.canvas_width.px, self.canvas_height.px / 2)
         pos_bl = transformer(0, self.canvas_height.px)
+        pos_bc = transformer(self.canvas_width.px / 2, self.canvas_height.px)
         pos_br = transformer(self.canvas_width.px, self.canvas_height.px)
-        min_lon = min(pos_tl[0], pos_tr[0], pos_bl[0], pos_br[0])
-        max_lon = max(pos_tl[0], pos_tr[0], pos_bl[0], pos_br[0])
-        min_lat = min(pos_tl[1], pos_tr[1], pos_bl[1], pos_br[1])
-        max_lat = max(pos_tl[1], pos_tr[1], pos_bl[1], pos_br[1])
+        min_lon = min(
+            pos_tl[0], pos_tc[0], pos_tr[0], pos_bl[0], pos_bc[0], pos_br[0],
+            pos_cl[0], pos_cr[0]
+        )
+        max_lon = max(
+            pos_tl[0], pos_tc[0], pos_tr[0], pos_bl[0], pos_bc[0], pos_br[0],
+            pos_cl[0], pos_cr[0]
+        )
+        min_lat = min(
+            pos_tl[1], pos_tc[1], pos_tr[1], pos_bl[1], pos_bc[1], pos_br[1],
+            pos_cl[1], pos_cr[1]
+        )
+        max_lat = max(
+            pos_tl[1], pos_tc[1], pos_tr[1], pos_bl[1], pos_bc[1], pos_br[1],
+            pos_cl[1], pos_cr[1]
+        )
         return min_lon, min_lat, max_lon, max_lat
 
     def build_wgs84_to_utm_on_canvas(
