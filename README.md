@@ -101,6 +101,30 @@ in other non-world-map situations:
 [Threshold Filter]: https://en.wikipedia.org/wiki/Thresholding_(image_processing)
 [Floyd-Steinberg Dithering]: https://en.wikipedia.org/wiki/Floyd–Steinberg_dithering
 
+## Sea-depth rendering attempts
+
+Below are some examples of sea-depth renderings. That is, where the colored
+tiles are distributed in a way that resemble the ocean's bathymetry.
+
+The first once is my attempt to recreate the LEGO world map. Unfortunately it's
+very hard to match LEGO's map, mainly because I haven't figured out how exactly
+their tiles are exactly distributed.
+I suspect it was done by human, because there are cosmetic clues
+
+| Rendering | Result |
+|------|------------|
+| LEGO | ![LEGO map with colours](readme_files/full_lego_x3.png) |
+| My Attempt | ![My attempt at the world map](readme_files/full_custom_x3.png) |
+
+I've also created some custom maps using a similar algorithms, zoomed in and
+using a UTM projection.
+
+| Rendering | Land | Sea-depth | Result |
+|-----------|------|-------|--------|
+| North Sea | ![Land rendering of the North Sea](readme_files/land_north_sea_x3.png) | ![Grayscale sea-depth rendering of the North Sea](readme_files/depth_north_sea_x3.png) | ![Rendering of the North Sea](readme_files/full_north_sea_x3.png) |
+| Iceland | ![Land rendering of Iceland](readme_files/land_iceland_x3.png) | ![Grayscale sea-depth rendering of Iceland](readme_files/depth_iceland_x3.png) | ![Rendering of Iceland](readme_files/full_iceland_x3.png) |  
+| Greece | ![Land rendering of Greece](readme_files/land_greece_x3.png) | ![Grayscale sea-depth rendering of Greece](readme_files/depth_greece_x3.png) | ![Rendering of Greece](readme_files/full_greece_x3.png) |
+
 ## Script descriptions
 
 ### count_tiles_from_ascii.py
