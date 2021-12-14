@@ -25,6 +25,7 @@ class BrightnessTileProportions:
 
                 tile = row[0]
                 brightness_proportions = row[1:]
+                last_end = 0
 
                 for brightness_proportion_i in \
                         range(len(brightness_proportions)):
@@ -34,13 +35,34 @@ class BrightnessTileProportions:
                     brightness_proportion = float(brightness_proportions[
                                                       brightness_proportion_i
                                                   ])
-                    start_str, end_str = brightness_range_str.split('-')
+                    if '-' in brightness_range_str:
+                        start_str, end_str = brightness_range_str.split('-')
+                    else:
+                        start_str = brightness_range_str
+                        end_str = start_str
                     start = int(start_str)
                     end = int(end_str)
+
+                    # Back-fill any values
+                    if last_end != start:
+                        for brightness in range(last_end, start):
+                            if brightness not in proportions:
+                                proportions[brightness] = {}
+                            interpolated_perc = (brightness - last_end) / (
+                                    start - last_end)
+                            last_end_prop = proportions[
+                                last_end][tile]
+                            interpolated_prop = \
+                                (brightness_proportion - last_end_prop) * \
+                                interpolated_perc + last_end_prop
+                            proportions[brightness][tile] = interpolated_prop
+
                     for brightness in range(start, end + 1):
                         if brightness not in proportions:
                             proportions[brightness] = {}
                         proportions[brightness][tile] = brightness_proportion
+
+                    last_end = end
 
         # Normalise the proportions to be between 0 and 1
         for brightness, tile_proportions in proportions.items():

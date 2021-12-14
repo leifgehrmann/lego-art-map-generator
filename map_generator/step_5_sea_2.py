@@ -57,7 +57,7 @@ def calculate_distribution_given_histogram(
 
         # Multiply the percentage by a thousand so we can get a representative
         # sample of tiles.
-        tile_counts = [int(x * 1000) for x in tile_proportions.values()]
+        tile_counts = [int(x * 1000000) for x in tile_proportions.values()]
 
         for tile in random.sample(
                 list(tile_proportions.keys()),
