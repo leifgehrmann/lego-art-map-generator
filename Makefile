@@ -47,13 +47,13 @@ readme_files:
 	convert readme_files/land_custom.png -filter box -resize 384x240 readme_files/land_custom_x3.png
 	convert output/world_map_step_4.png -filter box -resize 384x240 readme_files/depth_custom_x3.png
 	convert output/world_map_step_5.png -filter box -resize 384x240 readme_files/full_custom_x3.png
-	convert output/north_sea_step_3.png -filter box -resize 384x240 readme_files/land_north_sea_x3.png
-	convert output/north_sea_step_4.png -filter box -resize 384x240 readme_files/depth_north_sea_x3.png
-	convert output/north_sea_step_5.png -filter box -resize 384x240 readme_files/full_north_sea_x3.png
-	convert output/iceland_step_3.png -filter box -resize 384x240 readme_files/land_iceland_x3.png
+	convert output/north_sea_step_2.png -filter box -resize 240x384 readme_files/land_north_sea_x3.png
+	convert output/north_sea_step_4.png -filter box -resize 240x384 readme_files/depth_north_sea_x3.png
+	convert output/north_sea_step_5.png -filter box -resize 240x384 readme_files/full_north_sea_x3.png
+	convert output/iceland_step_2.png -filter box -resize 384x240 readme_files/land_iceland_x3.png
 	convert output/iceland_step_4.png -filter box -resize 384x240 readme_files/depth_iceland_x3.png
 	convert output/iceland_step_5.png -filter box -resize 384x240 readme_files/full_iceland_x3.png
-	convert output/greece_step_3.png -filter box -resize 384x240 readme_files/land_greece_x3.png
+	convert output/greece_step_2.png -filter box -resize 384x240 readme_files/land_greece_x3.png
 	convert output/greece_step_4.png -filter box -resize 384x240 readme_files/depth_greece_x3.png
 	convert output/greece_step_5.png -filter box -resize 384x240 readme_files/full_greece_x3.png
 
@@ -94,7 +94,7 @@ greece_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/greece_step_1.png output/greece_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/greece_step_2.png output/greece_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/greece_step_3.png output/greece_step_4.png --max-depth=4400 --size=128,80 --center=22,37.5 --scale=12500 --rotation=0
-	poetry run python map_generator/step_5_sea_2.py output/greece_step_3.png output/greece_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/greece_step_5.png
+	poetry run python map_generator/step_5_sea_2.py output/greece_step_3.png output/greece_step_4.png data/greece_map_brightness_tile_proportion.csv data/greece_map_max_tile_counts.csv output/greece_step_5.png
 
 lint: ## Checks for linting errors
 	poetry run flake8
