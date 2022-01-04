@@ -39,14 +39,14 @@ class UtmProjectionTransformerBuilder:
 
     def get_wgs84_bbox(self) -> Tuple[float, float, float, float]:
         transformer = self.build_utm_on_canvas_to_wgs84()
-        pos_tl = transformer(0, 0)
-        pos_tc = transformer(self.canvas_width.px / 2, 0)
-        pos_tr = transformer(self.canvas_width.px, 0)
-        pos_cl = transformer(0, self.canvas_height.px / 2)
+        pos_tl = transformer(-1, -1)
+        pos_tc = transformer(self.canvas_width.px / 2, -1)
+        pos_tr = transformer(self.canvas_width.px, -1)
+        pos_cl = transformer(-1, self.canvas_height.px / 2)
         pos_cr = transformer(self.canvas_width.px, self.canvas_height.px / 2)
-        pos_bl = transformer(0, self.canvas_height.px)
-        pos_bc = transformer(self.canvas_width.px / 2, self.canvas_height.px)
-        pos_br = transformer(self.canvas_width.px, self.canvas_height.px)
+        pos_bl = transformer(-1, self.canvas_height.px + 1)
+        pos_bc = transformer(self.canvas_width.px / 2, self.canvas_height.px + 1)
+        pos_br = transformer(self.canvas_width.px + 1, self.canvas_height.px + 1)
         min_lon = min(
             pos_tl[0], pos_tc[0], pos_tr[0], pos_bl[0], pos_bc[0], pos_br[0],
             pos_cl[0], pos_cr[0]
