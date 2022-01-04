@@ -31,7 +31,7 @@ The total number of tiles for each color are listed below:
 
 | Tile color | # of tiles required for World Map | # of tiles in box set according to booklet | Actual # of tiles in my box |
 |----------------------------------------------------------------|------|------|------|
-| ![White](https://img.shields.io/badge/-White-rgb(255,255,255))             | 3062 | 3064 | 3198 |
+| ![White](https://img.shields.io/badge/-White-rgb(255,255,255)) | 3062 | 3064 | 3198 |
 | ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91))       |  392 |  393 |  410 |
 | ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210))    | 1606 | 1607 | 1668 |
 | ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150))     | 1878 | 1879 | 1956 |
@@ -119,12 +119,14 @@ I suspect it was done by human, because there are cosmetic clues
 I've also created some custom maps using a similar algorithms, zoomed in and
 using a UTM projection.
 
-| Rendering | Land                                                                    | Sea-depth                                                                              | Result                                                            |
-|-----------|-------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
-| World Map | ![Land rendering of the World Map](readme_files/land_custom_x3.png) | ![Grayscale sea-depth rendering of the World Map](readme_files/depth_custom_x3.png)    | ![Rendering of the World Map](readme_files/full_custom_x3.png)    |
-| North Sea | ![Land rendering of the North Sea](readme_files/land_north_sea_x3.png)  | ![Grayscale sea-depth rendering of the North Sea](readme_files/depth_north_sea_x3.png) | ![Rendering of the North Sea](readme_files/full_north_sea_x3.png) |
-| Iceland   | ![Land rendering of Iceland](readme_files/land_iceland_x3.png)          | ![Grayscale sea-depth rendering of Iceland](readme_files/depth_iceland_x3.png)         | ![Rendering of Iceland](readme_files/full_iceland_x3.png)         |  
-| Greece    | ![Land rendering of Greece](readme_files/land_greece_x3.png)            | ![Grayscale sea-depth rendering of Greece](readme_files/depth_greece_x3.png)           | ![Rendering of Greece](readme_files/full_greece_x3.png)           |
+| Rendering  | Land                                                                   | Sea-depth                                                                              | Result                                                            |
+|------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| World Map  | ![Land rendering of the World Map](readme_files/land_custom_x3.png)    | ![Grayscale sea-depth rendering of the World Map](readme_files/depth_custom_x3.png)    | ![Rendering of the World Map](readme_files/full_custom_x3.png)    |
+| North Sea  | ![Land rendering of the North Sea](readme_files/land_north_sea_x3.png) | ![Grayscale sea-depth rendering of the North Sea](readme_files/depth_north_sea_x3.png) | ![Rendering of the North Sea](readme_files/full_north_sea_x3.png) |
+| Iceland    | ![Land rendering of Iceland](readme_files/land_iceland_x3.png)         | ![Grayscale sea-depth rendering of Iceland](readme_files/depth_iceland_x3.png)         | ![Rendering of Iceland](readme_files/full_iceland_x3.png)         |
+| Denmark    | ![Land rendering of Denmark](readme_files/land_denmark_x3.png)         | ![Grayscale sea-depth rendering of Denmark](readme_files/depth_denmark_x3.png)         | ![Rendering of Denmark](readme_files/full_denmark_x3.png)         |
+| Greece     | ![Land rendering of Greece](readme_files/land_greece_x3.png)           | ![Grayscale sea-depth rendering of Greece](readme_files/depth_greece_x3.png)           | ![Rendering of Greece](readme_files/full_greece_x3.png)           |
+| Madagascar | ![Land rendering of Madagascar](readme_files/land_madagascar_x3.png)   | ![Grayscale sea-depth rendering of Madagascar](readme_files/depth_madagascar_x3.png)   | ![Rendering of Madagascar](readme_files/full_madagascar_x3.png)   |
 
 ## Script descriptions
 

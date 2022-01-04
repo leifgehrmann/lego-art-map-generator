@@ -53,9 +53,15 @@ readme_files:
 	convert output/iceland_step_2.png -filter box -resize 384x240 readme_files/land_iceland_x3.png
 	convert output/iceland_step_4.png -filter box -resize 384x240 readme_files/depth_iceland_x3.png
 	convert output/iceland_step_5.png -filter box -resize 384x240 readme_files/full_iceland_x3.png
+	convert output/denmark_step_2.png -filter box -resize 384x240 readme_files/land_denmark_x3.png
+	convert output/denmark_step_4.png -filter box -resize 384x240 readme_files/depth_denmark_x3.png
+	convert output/denmark_step_5.png -filter box -resize 384x240 readme_files/full_denmark_x3.png
 	convert output/greece_step_2.png -filter box -resize 384x240 readme_files/land_greece_x3.png
 	convert output/greece_step_4.png -filter box -resize 384x240 readme_files/depth_greece_x3.png
 	convert output/greece_step_5.png -filter box -resize 384x240 readme_files/full_greece_x3.png
+	convert output/madagascar_step_2.png -filter box -resize 384x240 readme_files/land_madagascar_x3.png
+	convert output/madagascar_step_4.png -filter box -resize 384x240 readme_files/depth_madagascar_x3.png
+	convert output/madagascar_step_5.png -filter box -resize 384x240 readme_files/full_madagascar_x3.png
 
 world_map_example:
 	poetry run python map_generator/step_1_land_grayscale_world_map.py output/world_map_step_1.png
@@ -72,6 +78,14 @@ north_sea_example:
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/north_sea_step_3.png output/north_sea_step_4.png --size=80,128 --center=1.8,58.8 --scale=15000 --rotation=25 --max-depth=3500
 	poetry run python map_generator/step_5_sea_2.py output/north_sea_step_3.png output/north_sea_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/north_sea_step_5.png
 
+denmark_example:
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/denmark_step_1_x4.png --size=80,80 --center=10,55.5 --scale=8000 --rotation=0 --pixel-scale-factor=4
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/denmark_step_1.png --size=80,80 --center=10,55.5 --scale=8000 --rotation=0
+	poetry run python map_generator/step_2_grayscale_to_1bit.py output/denmark_step_1.png output/denmark_step_2.png --mode=custom_1
+	poetry run python map_generator/step_3_land_shadow.py output/denmark_step_2.png output/denmark_step_3.png
+	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/denmark_step_3.png output/denmark_step_4.png --size=80,80 --center=10,55.5 --scale=8000 --rotation=0 --max-depth=700
+	poetry run python map_generator/step_5_sea_2.py output/denmark_step_3.png output/denmark_step_4.png data/denmark_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/denmark_step_5.png
+
 new_zealand_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/new_zealand_step_1_x4.png --size=128,80 --center=-18,65 --scale=5000 --rotation=0 --pixel-scale-factor=4
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/new_zealand_step_1.png --size=80,128 --center=172.8,-41 --scale=11500 --rotation=-15
@@ -79,6 +93,14 @@ new_zealand_example:
 	poetry run python map_generator/step_3_land_shadow.py output/new_zealand_step_2.png output/new_zealand_step_3.png
 	# poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/new_zealand_step_3.png output/new_zealand_step_4.png --size=80,128 --center=173,-41 --scale=15000 --rotation=0 --max-depth=3500
 	# poetry run python map_generator/step_5_sea_2.py output/new_zealand_step_3.png output/new_zealand_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/new_zealand_step_5.png
+
+madagascar_example:
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/madagascar_step_1_x4.png --size=80,128 --center=46.3,-19 --scale=14000 --rotation=0 --pixel-scale-factor=4
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/madagascar_step_1.png --size=80,128 --center=46.3,-19 --scale=14000 --rotation=0
+	poetry run python map_generator/step_2_grayscale_to_1bit.py output/madagascar_step_1.png output/madagascar_step_2.png --mode=custom_1
+	poetry run python map_generator/step_3_land_shadow.py output/madagascar_step_2.png output/madagascar_step_3.png
+	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/madagascar_step_3.png output/madagascar_step_4.png --size=80,128 --center=46.3,-19 --scale=14000 --rotation=0 --max-depth=5000
+	poetry run python map_generator/step_5_sea_2.py output/madagascar_step_3.png output/madagascar_step_4.png data/madagascar_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/madagascar_step_5.png
 
 iceland_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/iceland_step_1_x4.png --size=128,80 --center=-18.7,65 --scale=5800 --rotation=0 --pixel-scale-factor=4
