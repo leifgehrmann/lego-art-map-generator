@@ -53,15 +53,18 @@ readme_files:
 	convert output/iceland_step_2.png -filter box -resize 384x240 readme_files/land_iceland_x3.png
 	convert output/iceland_step_4.png -filter box -resize 384x240 readme_files/depth_iceland_x3.png
 	convert output/iceland_step_5.png -filter box -resize 384x240 readme_files/full_iceland_x3.png
-	convert output/denmark_step_2.png -filter box -resize 384x240 readme_files/land_denmark_x3.png
-	convert output/denmark_step_4.png -filter box -resize 384x240 readme_files/depth_denmark_x3.png
+	convert output/denmark_step_2.png -filter box -resize 240x240 readme_files/land_denmark_x3.png
+	convert output/denmark_step_4.png -filter box -resize 240x240 readme_files/depth_denmark_x3.png
 	convert output/denmark_step_5.png -filter box -resize 384x240 readme_files/full_denmark_x3.png
 	convert output/greece_step_2.png -filter box -resize 384x240 readme_files/land_greece_x3.png
 	convert output/greece_step_4.png -filter box -resize 384x240 readme_files/depth_greece_x3.png
 	convert output/greece_step_5.png -filter box -resize 384x240 readme_files/full_greece_x3.png
-	convert output/madagascar_step_2.png -filter box -resize 384x240 readme_files/land_madagascar_x3.png
-	convert output/madagascar_step_4.png -filter box -resize 384x240 readme_files/depth_madagascar_x3.png
-	convert output/madagascar_step_5.png -filter box -resize 384x240 readme_files/full_madagascar_x3.png
+	convert output/madagascar_step_2.png -filter box -resize 240x384 readme_files/land_madagascar_x3.png
+	convert output/madagascar_step_4.png -filter box -resize 240x384 readme_files/depth_madagascar_x3.png
+	convert output/madagascar_step_5.png -filter box -resize 240x384 readme_files/full_madagascar_x3.png
+	convert output/new_guinea_step_2.png -filter box -resize 384x240 readme_files/land_new_guinea_x3.png
+	convert output/new_guinea_step_4.png -filter box -resize 384x240 readme_files/depth_new_guinea_x3.png
+	convert output/new_guinea_step_5.png -filter box -resize 384x240 readme_files/full_new_guinea_x3.png
 
 world_map_example:
 	poetry run python map_generator/step_1_land_grayscale_world_map.py output/world_map_step_1.png
@@ -93,6 +96,14 @@ new_zealand_example:
 	poetry run python map_generator/step_3_land_shadow.py output/new_zealand_step_2.png output/new_zealand_step_3.png
 	# poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/new_zealand_step_3.png output/new_zealand_step_4.png --size=80,128 --center=173,-41 --scale=15000 --rotation=0 --max-depth=3500
 	# poetry run python map_generator/step_5_sea_2.py output/new_zealand_step_3.png output/new_zealand_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/new_zealand_step_5.png
+
+new_guinea_example:
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/new_guinea_step_1_x4.png --size=128,80 --center=141,-5 --scale=19000 --rotation=2 --pixel-scale-factor=4
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/new_guinea_step_1.png --size=128,80 --center=141,-5 --scale=19000 --rotation=2
+	poetry run python map_generator/step_2_grayscale_to_1bit.py output/new_guinea_step_1.png output/new_guinea_step_2.png --mode=custom_1
+	poetry run python map_generator/step_3_land_shadow.py output/new_guinea_step_2.png output/new_guinea_step_3.png
+	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/new_guinea_step_3.png output/new_guinea_step_4.png --size=128,80 --center=141,-5 --scale=19000 --rotation=2 --max-depth=5000
+	poetry run python map_generator/step_5_sea_2.py output/new_guinea_step_3.png output/new_guinea_step_4.png data/new_guinea_map_brightness_tile_proportion.csv data/new_guinea_map_max_tile_counts.csv output/new_guinea_step_5.png
 
 madagascar_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/madagascar_step_1_x4.png --size=80,128 --center=46.3,-19 --scale=14000 --rotation=0 --pixel-scale-factor=4

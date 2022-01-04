@@ -127,6 +127,7 @@ using a UTM projection.
 | Denmark    | ![Land rendering of Denmark](readme_files/land_denmark_x3.png)         | ![Grayscale sea-depth rendering of Denmark](readme_files/depth_denmark_x3.png)         | ![Rendering of Denmark](readme_files/full_denmark_x3.png)         |
 | Greece     | ![Land rendering of Greece](readme_files/land_greece_x3.png)           | ![Grayscale sea-depth rendering of Greece](readme_files/depth_greece_x3.png)           | ![Rendering of Greece](readme_files/full_greece_x3.png)           |
 | Madagascar | ![Land rendering of Madagascar](readme_files/land_madagascar_x3.png)   | ![Grayscale sea-depth rendering of Madagascar](readme_files/depth_madagascar_x3.png)   | ![Rendering of Madagascar](readme_files/full_madagascar_x3.png)   |
+| New Guinea | ![Land rendering of New Guinea](readme_files/land_new_guinea_x3.png)   | ![Grayscale sea-depth rendering of New Guinea](readme_files/depth_new_guinea_x3.png)   | ![Rendering of New Guinea](readme_files/full_new_guinea_x3.png)   |
 
 ## Script descriptions
 
