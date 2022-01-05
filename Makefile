@@ -65,6 +65,9 @@ readme_files:
 	convert output/new_guinea_step_2.png -filter box -resize 384x240 readme_files/land_new_guinea_x3.png
 	convert output/new_guinea_step_4.png -filter box -resize 384x240 readme_files/depth_new_guinea_x3.png
 	convert output/new_guinea_step_5.png -filter box -resize 384x240 readme_files/full_new_guinea_x3.png
+	convert output/corsica_step_2.png -filter box -resize 240x384 readme_files/land_corsica_x3.png
+	convert output/corsica_step_4.png -filter box -resize 240x384 readme_files/depth_corsica_x3.png
+	convert output/corsica_step_5.png -filter box -resize 240x384 readme_files/full_corsica_x3.png
 
 world_map_example:
 	poetry run python map_generator/step_1_land_grayscale_world_map.py output/world_map_step_1.png
@@ -128,6 +131,14 @@ greece_example:
 	poetry run python map_generator/step_3_land_shadow.py output/greece_step_2.png output/greece_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/greece_step_3.png output/greece_step_4.png --max-depth=4400 --size=128,80 --center=22,37.5 --scale=12500 --rotation=0
 	poetry run python map_generator/step_5_sea_2.py output/greece_step_3.png output/greece_step_4.png data/greece_map_brightness_tile_proportion.csv data/greece_map_max_tile_counts.csv output/greece_step_5.png
+
+corsica_example:
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/corsica_step_1_x4.png --size=80,128 --center=9.1,42.2 --scale=1700 --rotation=0 --pixel-scale-factor=4
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/corsica_step_1.png --size=80,128 --center=9.1,42.2 --scale=1700 --rotation=0
+	poetry run python map_generator/step_2_grayscale_to_1bit.py output/corsica_step_1.png output/corsica_step_2.png --mode=custom_1
+	poetry run python map_generator/step_3_land_shadow.py output/corsica_step_2.png output/corsica_step_3.png
+	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/corsica_step_3.png output/corsica_step_4.png --size=80,128 --center=9.1,42.2 --scale=1700 --rotation=0 --max-depth=3000
+	poetry run python map_generator/step_5_sea_2.py output/corsica_step_3.png output/corsica_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/new_guinea_map_max_tile_counts.csv output/corsica_step_5.png
 
 lint: ## Checks for linting errors
 	poetry run flake8
