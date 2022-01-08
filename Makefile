@@ -70,6 +70,7 @@ readme_files:
 	convert output/corsica_step_5.png -filter box -resize 240x384 readme_files/full_corsica_x3.png
 
 world_map_example:
+	poetry run python map_generator/step_1_land_grayscale_world_map.py output/world_map_step_1_x8.png --pixel-scale-factor=8
 	poetry run python map_generator/step_1_land_grayscale_world_map.py output/world_map_step_1.png
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/world_map_step_1.png output/world_map_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/world_map_step_2.png output/world_map_step_3.png
