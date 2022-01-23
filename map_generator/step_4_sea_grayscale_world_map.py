@@ -69,7 +69,12 @@ def lookup_coord_in_geotiffs(coord: Coord, geotiffs: List[GeoTiff]) -> GeoTiff:
     nargs=1,
     type=click.Path(exists=False)
 )
-def render(mask: str, dst: str):
+@click.option(
+    "--pixel-scale-factor",
+    default=1,
+    help='Controls the size of the image'
+)
+def render(mask: str, dst: str, pixel_scale_factor: int):
     # Load the land + shadow mask map, to skip cells we know we don't need to
     # render over.
     mask = Image.open(Path(mask).as_posix()).convert('RGB')
@@ -77,8 +82,8 @@ def render(mask: str, dst: str):
     # Load the world bathymetric map data
     geotiffs = retrieve_geotiffs()
 
-    canvas_width = CanvasUnit.from_px(128)
-    canvas_height = CanvasUnit.from_px(80)
+    canvas_width = CanvasUnit.from_px(128 * pixel_scale_factor)
+    canvas_height = CanvasUnit.from_px(80 * pixel_scale_factor)
     canvas_shape = (int(canvas_height.px), int(canvas_width.px))
     # For each position on the map, lookup the bathymetric value at that exact
     # position and store in the array.
@@ -95,7 +100,10 @@ def render(mask: str, dst: str):
         print(output_y)
         for output_x in range(output_arr.shape[1]):
             # Skip pixels that will already be covered by the land + shadow map
-            if mask.getpixel((output_x, output_y)) != (0, 0, 0):
+            if mask.getpixel((
+                    int(output_x/pixel_scale_factor),
+                    int(output_y/pixel_scale_factor)
+            )) != (0, 0, 0):
                 output_arr[output_y][output_x] = 255
                 continue
 
