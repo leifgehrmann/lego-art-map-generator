@@ -26,32 +26,32 @@ class LegoProjectionTransformerBuilder:
             {
                 'latitude_range_start': -90.0,
                 'latitude_range_stop': -83.0,
-                'canvas_range_start': CanvasUnit.from_px(80 + 1).pt,
-                'canvas_range_stop': CanvasUnit.from_px(80).pt,
+                'canvas_range_start': 80/80 * canvas_height.px + 1,
+                'canvas_range_stop': 80/80 * canvas_height.px,
             },
             {
                 'latitude_range_start': -83.0,
                 'latitude_range_stop': -60.0,
-                'canvas_range_start': CanvasUnit.from_px(80).pt,
-                'canvas_range_stop': CanvasUnit.from_px(70).pt,
+                'canvas_range_start': 80/80 * canvas_height.px,
+                'canvas_range_stop': 70/80 * canvas_height.px,
             },
             {
                 'latitude_range_start': -60.0,
                 'latitude_range_stop': -57.0,
-                'canvas_range_start': CanvasUnit.from_px(70).pt,
-                'canvas_range_stop': CanvasUnit.from_px(66.5).pt,
+                'canvas_range_start': 70/80 * canvas_height.px,
+                'canvas_range_stop': 66.5/80 * canvas_height.px,
             },
             {
                 'latitude_range_start': -57.0,
                 'latitude_range_stop': 86.0,
-                'canvas_range_start': CanvasUnit.from_px(66.5).pt,
-                'canvas_range_stop': CanvasUnit.from_px(3.5).pt,
+                'canvas_range_start': 66.5/80 * canvas_height.px,
+                'canvas_range_stop': 3.5/80 * canvas_height.px,
             },
             {
                 'latitude_range_start': 86.0,
                 'latitude_range_stop': 90.0,
-                'canvas_range_start': CanvasUnit.from_px(3.5).pt,
-                'canvas_range_stop': CanvasUnit.from_px(0).pt,
+                'canvas_range_start': 3.5/80 * canvas_height.px,
+                'canvas_range_stop': 0/80 * canvas_height.px,
             }
         ]
 
@@ -82,8 +82,12 @@ class LegoProjectionTransformerBuilder:
                 ):
                     min_latitude_range = stretch_band['latitude_range_start']
                     max_latitude_range = stretch_band['latitude_range_stop']
-                    min_y_range = stretch_band['canvas_range_start']
-                    max_y_range = stretch_band['canvas_range_stop']
+                    min_y_range = CanvasUnit.from_px(
+                        stretch_band['canvas_range_start']
+                    ).pt
+                    max_y_range = CanvasUnit.from_px(
+                        stretch_band['canvas_range_stop']
+                    ).pt
                     break
 
             if (
@@ -113,7 +117,7 @@ class LegoProjectionTransformerBuilder:
         ) -> Tuple[float, float]:
             x_canvas = CanvasUnit.from_px(x_canvas_px).pt
             y_canvas = CanvasUnit.from_px(y_canvas_px).pt
-            x_offset = CanvasUnit.from_px(-4)
+            x_offset = CanvasUnit.from_px(-4/128 * self.canvas_width.px)
             x_percentage = (x_canvas - x_offset.pt) / self.canvas_width.pt
             longitude = (x_percentage * 360 + 360) % 360 - 180
 
@@ -123,17 +127,23 @@ class LegoProjectionTransformerBuilder:
             max_y_range = None
 
             for stretch_band in self.stretch_bands:
+                canvas_range_start_in_pt = CanvasUnit.from_px(
+                    stretch_band['canvas_range_start']
+                ).pt
+                canvas_range_stop_in_pt = CanvasUnit.from_px(
+                    stretch_band['canvas_range_stop']
+                ).pt
                 if ((
-                        stretch_band['canvas_range_start'] >= y_canvas or
-                        isclose(stretch_band['canvas_range_start'], y_canvas)
+                        canvas_range_start_in_pt >= y_canvas or
+                        isclose(canvas_range_start_in_pt, y_canvas)
                 ) and (
-                        y_canvas >= stretch_band['canvas_range_stop'] or
-                        isclose(stretch_band['canvas_range_stop'], y_canvas)
+                        y_canvas >= canvas_range_stop_in_pt or
+                        isclose(canvas_range_stop_in_pt, y_canvas)
                 )):
                     min_latitude_range = stretch_band['latitude_range_start']
                     max_latitude_range = stretch_band['latitude_range_stop']
-                    min_y_range = stretch_band['canvas_range_start']
-                    max_y_range = stretch_band['canvas_range_stop']
+                    min_y_range = canvas_range_start_in_pt
+                    max_y_range = canvas_range_stop_in_pt
                     break
 
             if (
