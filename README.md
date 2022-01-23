@@ -8,24 +8,10 @@ decisions they made.
 
 **This project is not affiliated with The Lego Group.**
 
-## Interesting notes about the LEGO Art world map set
-
-* The map appears to be a vertically stretched WGS84/EPSG:4326 projection,
-  except all the continents are shifted 11.5 degrees to the west and 3.5 degrees
-  to the south. This was probably done to ensure the
-  [Chukchi Peninsula][chukchi-peninsula] wasn't cut off.
-* Antarctica was also shifted a fair amount, although it's not clear what
-  additional transformations were made.
-* Unsurprisingly a lot of creative liberties were made with the coastline,
-  mostly to emphasize certain islands and coastlines.
-
-![LEGO World Map with coastlines on top](world-map-with-coastlines.png)
-
-[chukchi-peninsula]: https://en.wikipedia.org/wiki/Chukchi_Peninsula
+## Tile counts
 
 The box set contains an excess number of tiles to allow you to customise the
-world a bit, but the excess number is not uniform for every color. For example,
-you are given 3062 white tiles, and only have 2 unused tile left to spare.
+world a bit, but the there are different amounts for each color.
 
 The total number of tiles for each color are listed below:
 
@@ -47,32 +33,32 @@ I also collected statistics on individual bags that I found in my set.
 Your tile count will probably be different to mine, since there appears to be
 some randomness.
 
-| Bag name | tile count |
-|---|---|
-| White bag 1 | 1065 |
-| White bag 2 | 1067 |
-| White bag 3 | 1064 |
-| White extras bag | 2 |
-| Navy bag 1 | 408 |
-| Navy extras bag | 2 |
-| Cyan bag 1 | 829 |
-| Cyan bag 2 | 837 |
-| Cyan extras bag | 2 |
-| Teal bag 1 | 977 |
-| Teal bag 2 | 977 |
-| Teal extras bag | 2 |
-| Green bag | 619 |
-| Green extras bag | 2 |
-| Olive bag | 1104 |
-| Olive extras bag | 2 |
-| Beige bag | 750 |
-| Beige extras bag | 2 |
-| Yellow bag | 617 |
-| Yellow extras bag | 2 |
-| Orange bag | 623 |
-| Orange extras bag | 2 |
-| Coral bag | 625 |
-| Coral extras bag | 2 |
+| Bag name          | tile count |
+|-------------------|------------|
+| White bag 1       | 1065       |
+| White bag 2       | 1067       |
+| White bag 3       | 1064       |
+| White extras bag  | 2          |
+| Navy bag 1        | 408        |
+| Navy extras bag   | 2          |
+| Cyan bag 1        | 829        |
+| Cyan bag 2        | 837        |
+| Cyan extras bag   | 2          |
+| Teal bag 1        | 977        |
+| Teal bag 2        | 977        |
+| Teal extras bag   | 2          |
+| Green bag         | 619        |
+| Green extras bag  | 2          |
+| Olive bag         | 1104       |
+| Olive extras bag  | 2          |
+| Beige bag         | 750        |
+| Beige extras bag  | 2          |
+| Yellow bag        | 617        |
+| Yellow extras bag | 2          |
+| Orange bag        | 623        |
+| Orange extras bag | 2          |
+| Coral bag         | 625        |
+| Coral extras bag  | 2          |
 
 ## Different land rendering attempts
 
@@ -87,17 +73,16 @@ in other non-world-map situations:
 * Highlights islands, such as the Kerguelen Islands.
 * Highlights narrow seas, such as the Red Sea.
 
-| Rendering Method | Result |
-|----|----|
-| LEGO (full) | ![LEGO map with colours](readme_files/full_lego_x3.png) |
-| LEGO (land) | ![LEGO map with just land tiles](readme_files/land_lego_x3.png) |
-| Render with anti-aliasing | ![Map with anti-aliasing](readme_files/land_grayscale_x3.png) |
-| Render without anti-aliasing | ![Map without anti-aliasing](readme_files/land_aliased_x3.png) |
-| [Threshold Filter] | ![Map using a threshold filter](readme_files/land_threshold_x3.png) |
-| [Floyd-Steinberg Dithering] | ![Map using a dithering filter](readme_files/land_dither_x3.png) |
-| Custom filter | ![Map using Pillow's convert](readme_files/land_custom_x3.png) |
+| Rendering Method             | Result                                                              |
+|------------------------------|---------------------------------------------------------------------|
+| LEGO (full)                  | ![LEGO map with colours](readme_files/full_lego_x3.png)             |
+| LEGO (land)                  | ![LEGO map with just land tiles](readme_files/land_lego_x3.png)     |
+| Render with anti-aliasing    | ![Map with anti-aliasing](readme_files/land_grayscale_x3.png)       |
+| Render without anti-aliasing | ![Map without anti-aliasing](readme_files/land_aliased_x3.png)      |
+| [Threshold Filter]           | ![Map using a threshold filter](readme_files/land_threshold_x3.png) |
+| [Floyd-Steinberg Dithering]  | ![Map using a dithering filter](readme_files/land_dither_x3.png)    |
+| Custom filter                | ![Map using Pillow's convert](readme_files/land_custom_x3.png)      |
 
-[Cairo]: https://www.cairographics.org
 [Threshold Filter]: https://en.wikipedia.org/wiki/Thresholding_(image_processing)
 [Floyd-Steinberg Dithering]: https://en.wikipedia.org/wiki/Floyd–Steinberg_dithering
 
@@ -108,12 +93,12 @@ tiles are distributed in a way that resemble the ocean's bathymetry.
 
 The first once is my attempt to recreate the LEGO world map. Unfortunately it's
 very hard to match LEGO's map, mainly because I haven't figured out how exactly
-their tiles are exactly distributed.
-I suspect it was done by human, because there are cosmetic clues
+their tiles are exactly distributed. It is most likely that someone manually
+distributed the tiles.
 
-| Rendering | Result |
-|------|------------|
-| LEGO | ![LEGO map with colours](readme_files/full_lego_x3.png) |
+| Rendering  | Result                                                          |
+|------------|-----------------------------------------------------------------|
+| LEGO       | ![LEGO map with colours](readme_files/full_lego_x3.png)         |
 | My Attempt | ![My attempt at the world map](readme_files/full_custom_x3.png) |
 
 I've also created some custom maps using a similar algorithms, zoomed in and
@@ -128,7 +113,7 @@ using a UTM projection.
 | Greece     | ![Land rendering of Greece](readme_files/land_greece_x3.png)           | ![Grayscale sea-depth rendering of Greece](readme_files/depth_greece_x3.png)           | ![Rendering of Greece](readme_files/full_greece_x3.png)           |
 | Madagascar | ![Land rendering of Madagascar](readme_files/land_madagascar_x3.png)   | ![Grayscale sea-depth rendering of Madagascar](readme_files/depth_madagascar_x3.png)   | ![Rendering of Madagascar](readme_files/full_madagascar_x3.png)   |
 | New Guinea | ![Land rendering of New Guinea](readme_files/land_new_guinea_x3.png)   | ![Grayscale sea-depth rendering of New Guinea](readme_files/depth_new_guinea_x3.png)   | ![Rendering of New Guinea](readme_files/full_new_guinea_x3.png)   |
-| Corsica    | ![Land rendering of Corsica](readme_files/land_corsica_x3.png)         | ![Grayscale sea-depth rendering of Corsica](readme_files/depth_corsica_x3.png)         | ![Rendering of Corsica](readme_files/full_corsica_x3.png)      |
+| Corsica    | ![Land rendering of Corsica](readme_files/land_corsica_x3.png)         | ![Grayscale sea-depth rendering of Corsica](readme_files/depth_corsica_x3.png)         | ![Rendering of Corsica](readme_files/full_corsica_x3.png)         |
 
 ## Script descriptions
 
