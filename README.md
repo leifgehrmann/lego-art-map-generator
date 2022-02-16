@@ -1,12 +1,40 @@
 # lego-art-map-generator
 
-Scripts for generating custom mosaics for the LEGO Art 'World Map' set.
+Scripts for generating custom mosaics for the LEGO [31203 World Map] set.
 
-It also has some notes of my research into the original LEGO 'World Map' set,
-such as how LEGO might have created the projection, and any interesting design
-decisions they made.
+The mosaics aim to imitate the same style as the original 'World Map' set, with
+white tiles representing land and coloured tiles representing the bathymetry.
 
 **This project is not affiliated with The Lego Group.**
+
+[31203 World Map]: https://www.lego.com/en-gb/product/world-map-31203
+
+## Examples
+
+Below is a proof of concept that show a recreation of the LEGO World Map using
+the scripts in this repository. One can tweak the parameters to get different
+results, so this is just an example of what is possible using these scripts.
+
+| Recreation                                                      | Original (By LEGO)                                      |
+|-----------------------------------------------------------------|---------------------------------------------------------|
+| ![My attempt at the world map](readme_files/full_custom_x3.png) | ![LEGO map with colours](readme_files/full_lego_x3.png) |
+
+The actual purpose of this repository was to create custom maps. Below are some
+examples of what's possible. The land and sea-depth images hopefully provide
+some context as to how the bathymetric data is used to distribute the coloured
+tiles.
+
+| Rendering   | Land                                                                   | Sea-depth                                                                              | Result                                                            |
+|-------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| World Map   | ![Land rendering of the World Map](readme_files/land_custom_x3.png)    | ![Grayscale sea-depth rendering of the World Map](readme_files/depth_custom_x3.png)    | ![Rendering of the World Map](readme_files/full_custom_x3.png)    |
+| North Sea   | ![Land rendering of the North Sea](readme_files/land_north_sea_x3.png) | ![Grayscale sea-depth rendering of the North Sea](readme_files/depth_north_sea_x3.png) | ![Rendering of the North Sea](readme_files/full_north_sea_x3.png) |
+| Iceland     | ![Land rendering of Iceland](readme_files/land_iceland_x3.png)         | ![Grayscale sea-depth rendering of Iceland](readme_files/depth_iceland_x3.png)         | ![Rendering of Iceland](readme_files/full_iceland_x3.png)         |
+| Denmark     | ![Land rendering of Denmark](readme_files/land_denmark_x3.png)         | ![Grayscale sea-depth rendering of Denmark](readme_files/depth_denmark_x3.png)         | ![Rendering of Denmark](readme_files/full_denmark_x3.png)         |
+| Greece      | ![Land rendering of Greece](readme_files/land_greece_x3.png)           | ![Grayscale sea-depth rendering of Greece](readme_files/depth_greece_x3.png)           | ![Rendering of Greece](readme_files/full_greece_x3.png)           |
+| Madagascar  | ![Land rendering of Madagascar](readme_files/land_madagascar_x3.png)   | ![Grayscale sea-depth rendering of Madagascar](readme_files/depth_madagascar_x3.png)   | ![Rendering of Madagascar](readme_files/full_madagascar_x3.png)   |
+| New Guinea  | ![Land rendering of New Guinea](readme_files/land_new_guinea_x3.png)   | ![Grayscale sea-depth rendering of New Guinea](readme_files/depth_new_guinea_x3.png)   | ![Rendering of New Guinea](readme_files/full_new_guinea_x3.png)   |
+| Corsica     | ![Land rendering of Corsica](readme_files/land_corsica_x3.png)         | ![Grayscale sea-depth rendering of Corsica](readme_files/depth_corsica_x3.png)         | ![Rendering of Corsica](readme_files/full_corsica_x3.png)         |
+| New Zealand | ![Land rendering of New Zealand](readme_files/land_new_zealand_x3.png) | ![Grayscale sea-depth rendering of New Zealand](readme_files/depth_new_zealand_x3.png) | ![Rendering of New Zealand](readme_files/full_new_zealand_x3.png) |
 
 ## Project structure
 
@@ -89,6 +117,9 @@ unwanted details.
 |---------------------------------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------------|
 | ![Map using a threshold filter](readme_files/land_threshold_x3.png) | ![Map using a dithering filter](readme_files/land_dither_x3.png) | ![Map using Pillow's convert](readme_files/land_custom_x3.png) |
 
+[Threshold Filter]: https://en.wikipedia.org/wiki/Thresholding_(image_processing)
+[Floyd-Steinberg Dithering]: https://en.wikipedia.org/wiki/Floyd–Steinberg_dithering
+
 ### Step 3 - Add a shadow to the landmasses
 
 This script takes any black and white image from step 2 (`step_2.png`), adds a
@@ -114,9 +145,9 @@ poetry run python map_generator/step_6_pixels_to_lego.py step_5.png step_6.png
 
 -----
 
-### Map Analysis
+## Map Analysis
 
-#### count_tiles_from_ascii.py and count_tiles_from_image.py
+### count_tiles_from_ascii.py and count_tiles_from_image.py
 
 When I started this project, I created a bunch of ASCII Grid files that
 represented the tile placements in the LEGO World Map. You can see them in
@@ -133,62 +164,6 @@ I made a similar script for counting unique colours in an image.
 ```commandline
 poetry run python map_analysis/count_tiles_from_image.py readme_files/full_lego.png
 ```
-
-## Different land rendering attempts
-
-Below are a few variations of the world map using different rendering methods.
-The goal is to retain high fidelity to the source image, a grayscale image,
-even though it is reduced to a 1-bit image.
-Since the LEGO version is artificial, with some islands deliberately scaled up,
-it is unlikely that one can create a rendering method that matches the LEGO
-map, but if it can match the following criteria, the renderer could be useful
-in other non-world-map situations:
-
-* Highlights islands, such as the Kerguelen Islands.
-* Highlights narrow seas, such as the Red Sea.
-
-| Rendering Method             | Result                                                              |
-|------------------------------|---------------------------------------------------------------------|
-| LEGO (full)                  | ![LEGO map with colours](readme_files/full_lego_x3.png)             |
-| LEGO (land)                  | ![LEGO map with just land tiles](readme_files/land_lego_x3.png)     |
-| Render with anti-aliasing    | ![Map with anti-aliasing](readme_files/land_grayscale_x3.png)       |
-| Render without anti-aliasing | ![Map without anti-aliasing](readme_files/land_aliased_x3.png)      |
-| [Threshold Filter]           | ![Map using a threshold filter](readme_files/land_threshold_x3.png) |
-| [Floyd-Steinberg Dithering]  | ![Map using a dithering filter](readme_files/land_dither_x3.png)    |
-| Custom filter                | ![Map using Pillow's convert](readme_files/land_custom_x3.png)      |
-
-[Threshold Filter]: https://en.wikipedia.org/wiki/Thresholding_(image_processing)
-[Floyd-Steinberg Dithering]: https://en.wikipedia.org/wiki/Floyd–Steinberg_dithering
-
-## Sea-depth rendering attempts
-
-Below are some examples of sea-depth renderings. That is, where the colored
-tiles are distributed in a way that resemble the ocean's bathymetry.
-
-The first once is my attempt to recreate the LEGO world map. Unfortunately it's
-very hard to match LEGO's map, mainly because I haven't figured out how exactly
-their tiles are exactly distributed. It is most likely that someone manually
-distributed the tiles.
-
-| Rendering  | Result                                                          |
-|------------|-----------------------------------------------------------------|
-| LEGO       | ![LEGO map with colours](readme_files/full_lego_x3.png)         |
-| My Attempt | ![My attempt at the world map](readme_files/full_custom_x3.png) |
-
-I've also created some custom maps using a similar algorithms, zoomed in and
-using a UTM projection.
-
-| Rendering   | Land                                                                   | Sea-depth                                                                              | Result                                                            |
-|-------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
-| World Map   | ![Land rendering of the World Map](readme_files/land_custom_x3.png)    | ![Grayscale sea-depth rendering of the World Map](readme_files/depth_custom_x3.png)    | ![Rendering of the World Map](readme_files/full_custom_x3.png)    |
-| North Sea   | ![Land rendering of the North Sea](readme_files/land_north_sea_x3.png) | ![Grayscale sea-depth rendering of the North Sea](readme_files/depth_north_sea_x3.png) | ![Rendering of the North Sea](readme_files/full_north_sea_x3.png) |
-| Iceland     | ![Land rendering of Iceland](readme_files/land_iceland_x3.png)         | ![Grayscale sea-depth rendering of Iceland](readme_files/depth_iceland_x3.png)         | ![Rendering of Iceland](readme_files/full_iceland_x3.png)         |
-| Denmark     | ![Land rendering of Denmark](readme_files/land_denmark_x3.png)         | ![Grayscale sea-depth rendering of Denmark](readme_files/depth_denmark_x3.png)         | ![Rendering of Denmark](readme_files/full_denmark_x3.png)         |
-| Greece      | ![Land rendering of Greece](readme_files/land_greece_x3.png)           | ![Grayscale sea-depth rendering of Greece](readme_files/depth_greece_x3.png)           | ![Rendering of Greece](readme_files/full_greece_x3.png)           |
-| Madagascar  | ![Land rendering of Madagascar](readme_files/land_madagascar_x3.png)   | ![Grayscale sea-depth rendering of Madagascar](readme_files/depth_madagascar_x3.png)   | ![Rendering of Madagascar](readme_files/full_madagascar_x3.png)   |
-| New Guinea  | ![Land rendering of New Guinea](readme_files/land_new_guinea_x3.png)   | ![Grayscale sea-depth rendering of New Guinea](readme_files/depth_new_guinea_x3.png)   | ![Rendering of New Guinea](readme_files/full_new_guinea_x3.png)   |
-| Corsica     | ![Land rendering of Corsica](readme_files/land_corsica_x3.png)         | ![Grayscale sea-depth rendering of Corsica](readme_files/depth_corsica_x3.png)         | ![Rendering of Corsica](readme_files/full_corsica_x3.png)         |
-| New Zealand | ![Land rendering of New Zealand](readme_files/land_new_zealand_x3.png) | ![Grayscale sea-depth rendering of New Zealand](readme_files/depth_new_zealand_x3.png) | ![Rendering of New Zealand](readme_files/full_new_zealand_x3.png) |
 
 ## Tile counts
 
