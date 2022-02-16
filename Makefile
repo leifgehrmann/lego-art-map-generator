@@ -45,6 +45,11 @@ readme_files:
 	convert readme_files/land_lego.png -filter box -resize 384x240 readme_files/land_lego_x3.png
 	convert readme_files/land_threshold.png -filter box -resize 384x240 readme_files/land_threshold_x3.png
 	convert readme_files/land_custom.png -filter box -resize 384x240 readme_files/land_custom_x3.png
+	convert output/world_map_step_1.png -filter box -resize 384x240 readme_files/step_1_x3.png
+	convert output/world_map_step_2.png -filter box -resize 384x240 readme_files/step_2_x3.png
+	convert output/world_map_step_3.png -filter box -resize 384x240 readme_files/step_3_x3.png
+	convert output/world_map_step_4.png -filter box -resize 384x240 readme_files/step_4_x3.png
+	convert output/world_map_step_5.png -filter box -resize 384x240 readme_files/step_5_x3.png
 	convert output/world_map_step_4.png -filter box -resize 384x240 readme_files/depth_custom_x3.png
 	convert output/world_map_step_5.png -filter box -resize 384x240 readme_files/full_custom_x3.png
 	convert output/north_sea_step_2.png -filter box -resize 240x384 readme_files/land_north_sea_x3.png

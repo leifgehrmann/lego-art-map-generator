@@ -12,8 +12,8 @@ decisions they made.
 
 Scripts are grouped in two sections:
 
-* `map_analysis` - Scripts to analyse tile distributions and bathymetric data.
 * `map_generator` - Scripts to generate the mosaics
+* `map_analysis` - Scripts to analyse tile distributions and bathymetric data.
 
 ### Pre-requisites
 
@@ -26,18 +26,46 @@ make download_ne_data
 make download_gebco_data
 ```
 
-### map_analysis
+### Map Generation
 
-#### Count number of tiles in an ASCII Grid file
+Map generation is split into 5 steps:
+
+* Step 1: Generate a grayscale image of the land-masses.
+* Step 2: Convert the image in step 1 into a 1-bit image.
+* Step 3: Modify the image in step 2 by adding a shadow to the edges of each landmass. 
+* Step 4: Generate a grayscale bathymetric map.
+* Step 5: Use the images in step 3 and 4, to distribute the coloured tiles according to proportions outlined in a CSV.
+
+| Step 1                                               | Step 2                                               | Step 3                                               | Step 4                                               | Step 5                                               |
+|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|
+| ![LEGO map with colours](readme_files/step_1_x3.png) | ![LEGO map with colours](readme_files/step_2_x3.png) | ![LEGO map with colours](readme_files/step_3_x3.png) | ![LEGO map with colours](readme_files/step_4_x3.png) | ![LEGO map with colours](readme_files/step_5_x3.png) |
+
+#### step_1
+
+
+
+### Map Analysis
+
+#### count_tiles_from_ascii.py
 
 When I started this project, I created a bunch of ASCII Grid files that
 represented the tile placements in the LEGO World Map. You can see them in
-[/data/lego_world_map_ascii/](/data/lego_world_map_ascii/)
+[/data/lego_world_map_ascii/](/data/lego_world_map_ascii/).
 
+I created a script that counts the unique colours in an image.
 
 ```commandline
 poetry run python map_analysis/count_tiles_from_ascii.py data/lego_world_map_ascii/*
 ``` 
+
+#### count_tiles_from_image.py
+
+Similar to the `count_tiles_from_ascii.py` script, this script counts the
+unique colours in an image
+
+```commandline
+poetry run python map_analysis/count_tiles_from_image.py readme_files/full_lego.png
+```
 
 ## Different land rendering attempts
 
