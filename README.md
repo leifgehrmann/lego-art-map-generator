@@ -8,16 +8,17 @@ decisions they made.
 
 **This project is not affiliated with The Lego Group.**
 
-## Script descriptions
+## Project structure
 
-Scripts are grouped in two sections:
+The project is grouped in three sections:
 
-* `map_generator` - Scripts to generate the mosaics
-* `map_analysis` - Scripts to analyse tile distributions and bathymetric data.
+* [`data`](/data) - Where all the raster and shapefile data is stored, such as bathymetry and coastline data.
+* [`map_generator`](/map_generator) - Scripts to generate the mosaics
+* [`map_analysis`](/map_analysis) - Scripts to analyse tile distributions and bathymetric data.
 
 ### Pre-requisites
 
-First make sure python is installed. The run the following commands to install
+First make sure python is installed. Then run the following commands to install
 dependencies and download map data.
 
 ```commandline
@@ -26,9 +27,9 @@ make download_ne_data
 make download_gebco_data
 ```
 
-### Map Generation
+## Map Generation
 
-Map generation is split into 5 steps:
+Map generation is split into 5 steps, each is its own script:
 
 * Step 1: Generate a grayscale image of the land-masses.
 * Step 2: Convert the image in step 1 into a 1-bit image.
@@ -40,28 +41,94 @@ Map generation is split into 5 steps:
 |------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|
 | ![LEGO map with colours](readme_files/step_1_x3.png) | ![LEGO map with colours](readme_files/step_2_x3.png) | ![LEGO map with colours](readme_files/step_3_x3.png) | ![LEGO map with colours](readme_files/step_4_x3.png) | ![LEGO map with colours](readme_files/step_5_x3.png) |
 
-#### step_1
+### Step 1 - Coastline generation
 
+This step comes in two varieties.
 
+To recreate the world map similar to the LEGO world map, you'll run this script:
+
+```commandline
+poetry run python map_generator/step_1_land_grayscale_world_map.py step_1.png
+```
+
+To generate a custom map of a specific part of the globe, you'll run this other
+script, which takes in numerous parameters for controlling the projection. This
+includes `center` (longitude/latitude), `scale` (meters per pixel), `rotation`
+(Degrees). The UTM projection is used, and will adapt to the `center` position
+you pick to minimize distortion. You can also control the size of the canvas
+using `size`.
+
+```commandline
+poetry run python map_generator/step_1_land_grayscale_utm_map.py step_1.png --size=80,128 --center=1.8,58.8 --scale=15000 --rotation=25
+```
+
+Here is an example of the output:
+
+![Map using a threshold filter](readme_files/land_grayscale_x3.png)
+
+### Step 2 - Converting the image to a 1-bit image
+
+This script will convert a grayscale image of the landmasses into a 1-bit image
+consisting only of black and white pixels. The algorithm used can be controlled
+with the `mode` flag.
+
+```commandline
+poetry run python map_generator/step_2_grayscale_to_1bit.py step_1.png step_2.png --mode=custom_1
+```
+
+The different modes are: 
+
+* `threshold` uses a simple 50/50 [Threshold Filter],
+* `dither` uses [Floyd-Steinberg Dithering],
+* `custom_1` uses a custom algorithm I made that does some vague kernel
+filtering that takes into account the neighboring pixels. This mode is
+recommended because the other modes often lose detail or add
+unwanted details.
+
+| `threshold`                                                         | `dither`                                                         | `custom_1`                                                     |
+|---------------------------------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------------|
+| ![Map using a threshold filter](readme_files/land_threshold_x3.png) | ![Map using a dithering filter](readme_files/land_dither_x3.png) | ![Map using Pillow's convert](readme_files/land_custom_x3.png) |
+
+### Step 3 - Add a shadow to the landmasses
+
+This script takes any black and white image from step 2 (`step_2.png`), adds a
+dark-blue  shadow to the white tiles on the right-hand side, and saves it to an
+output path (`step_3.png`)
+
+```commandline
+poetry run python map_generator/step_3_land_shadow.py step_2.png step_3.png
+```
+
+### Step 4
+
+### Step 5
+
+### Step 6 - Generate High-res image (Optional)
+
+Optionally, if you want to create an enlarged scale of the final image with
+rounded tiles instead of pixels, you can run this script.
+
+```commandline
+poetry run python map_generator/step_6_pixels_to_lego.py step_5.png step_6.png
+```
+
+-----
 
 ### Map Analysis
 
-#### count_tiles_from_ascii.py
+#### count_tiles_from_ascii.py and count_tiles_from_image.py
 
 When I started this project, I created a bunch of ASCII Grid files that
 represented the tile placements in the LEGO World Map. You can see them in
 [/data/lego_world_map_ascii/](/data/lego_world_map_ascii/).
 
-I created a script that counts the unique colours in an image.
+I created a script that counts the unique numbers in the files.
 
 ```commandline
 poetry run python map_analysis/count_tiles_from_ascii.py data/lego_world_map_ascii/*
 ``` 
 
-#### count_tiles_from_image.py
-
-Similar to the `count_tiles_from_ascii.py` script, this script counts the
-unique colours in an image
+I made a similar script for counting unique colours in an image.
 
 ```commandline
 poetry run python map_analysis/count_tiles_from_image.py readme_files/full_lego.png
