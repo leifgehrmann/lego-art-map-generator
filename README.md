@@ -19,10 +19,9 @@ results, so this is just an example of what is possible using these scripts.
 |-----------------------------------------------------------------|---------------------------------------------------------|
 | ![My attempt at the world map](readme_files/full_custom_x3.png) | ![LEGO map with colours](readme_files/full_lego_x3.png) |
 
-The actual purpose of this repository was to create custom maps. Below are some
-examples of what's possible. The land and sea-depth images hopefully provide
-some context as to how the bathymetric data is used to distribute the coloured
-tiles.
+The actual purpose of this repository was to create custom maps. The land and
+sea-depth images hopefully provide some context as to how the bathymetric data
+is used to distribute the coloured tiles.
 
 | Rendering   | Land                                                                   | Sea-depth                                                                              | Result                                                            |
 |-------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
@@ -65,9 +64,9 @@ Map generation is split into 5 steps, each is its own script:
 * Step 4: Generate a grayscale bathymetric map.
 * Step 5: Use the images in step 3 and 4, to distribute the coloured tiles according to proportions outlined in a CSV.
 
-| Step 1                                               | Step 2                                               | Step 3                                               | Step 4                                               | Step 5                                               |
-|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|
-| ![LEGO map with colours](readme_files/step_1_x3.png) | ![LEGO map with colours](readme_files/step_2_x3.png) | ![LEGO map with colours](readme_files/step_3_x3.png) | ![LEGO map with colours](readme_files/step_4_x3.png) | ![LEGO map with colours](readme_files/step_5_x3.png) |
+| Step 1                                         | Step 2                                         | Step 3                                         | Step 4                                         | Step 5                                         |
+|------------------------------------------------|------------------------------------------------|------------------------------------------------|------------------------------------------------|------------------------------------------------|
+| ![Image of Step 1](readme_files/step_1_x3.png) | ![Image of Step 2](readme_files/step_2_x3.png) | ![Image of Step 3](readme_files/step_3_x3.png) | ![Image of Step 4](readme_files/step_4_x3.png) | ![Image of Step 5](readme_files/step_5_x3.png) |
 
 The [Makefile](/Makefile) has some examples of how the scripts are used in practice. 
 
@@ -94,7 +93,7 @@ poetry run python map_generator/step_1_land_grayscale_utm_map.py step_1.png --si
 
 Here is an example of the output:
 
-![Map using a threshold filter](readme_files/land_grayscale_x3.png)
+![Grayscale map of the world's coastlines](readme_files/land_grayscale_x3.png)
 
 ### Step 2 - Converting the image to a 1-bit image
 
@@ -136,7 +135,7 @@ poetry run python map_generator/step_3_land_shadow.py step_2.png step_3.png
 
 **Warning:** This script might take a while to run.
 
-This script generate a grayscale image of the bathymetry data. The grayscale
+This script generates a grayscale image of the bathymetry data. The grayscale
 image represents sea-level as `#FFFFFF`, and the lowest sea-depth as `#000000`.
 Similar to Step 1, there are two scripts to choose from.
 
@@ -189,6 +188,8 @@ basic pixels, run this script.
 ```commandline
 poetry run python map_generator/step_6_pixels_to_lego.py step_5.png step_6.png
 ```
+
+![Map of Denmark](readme_files/step_6.png)
 
 ## Map Analysis
 
