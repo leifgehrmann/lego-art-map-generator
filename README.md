@@ -40,9 +40,9 @@ tiles.
 
 The project is grouped in three sections:
 
-* [`data`](/data) - Where all the raster and shapefile data is stored, such as bathymetry and coastline data.
+* [`data`](/data) - Where all the bathymetry and coastline data is stored.
 * [`map_generator`](/map_generator) - Scripts to generate the mosaics
-* [`map_analysis`](/map_analysis) - Scripts to analyse tile distributions and bathymetric data.
+* [`map_analysis`](/map_analysis) - Tool scripts to analyse tile distributions and bathymetric data.
 
 ### Pre-requisites
 
@@ -69,21 +69,23 @@ Map generation is split into 5 steps, each is its own script:
 |------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|------------------------------------------------------|
 | ![LEGO map with colours](readme_files/step_1_x3.png) | ![LEGO map with colours](readme_files/step_2_x3.png) | ![LEGO map with colours](readme_files/step_3_x3.png) | ![LEGO map with colours](readme_files/step_4_x3.png) | ![LEGO map with colours](readme_files/step_5_x3.png) |
 
+The [Makefile](/Makefile) has some examples of how the scripts are used in practice. 
+
 ### Step 1 - Coastline generation
 
 This step comes in two varieties.
 
-To recreate the world map similar to the LEGO world map, you'll run this script:
+To recreate the world map similar to the LEGO world map, run this script:
 
 ```commandline
 poetry run python map_generator/step_1_land_grayscale_world_map.py step_1.png
 ```
 
-To generate a custom map of a specific part of the globe, you'll run this other
+To generate a custom map of a specific part of the globe, run this other
 script, which takes in numerous parameters for controlling the projection. This
 includes `center` (longitude/latitude), `scale` (meters per pixel), `rotation`
 (Degrees). The UTM projection is used, and will adapt to the `center` position
-you pick to minimize distortion. You can also control the size of the canvas
+you pick to minimize distortion. The size of the canvas can also be controlled
 using `size`.
 
 ```commandline
@@ -130,40 +132,100 @@ output path (`step_3.png`)
 poetry run python map_generator/step_3_land_shadow.py step_2.png step_3.png
 ```
 
-### Step 4
+### Step 4 - Bathymetry generation
 
-### Step 5
+**Warning:** This script might take a while to run.
+
+This script generate a grayscale image of the bathymetry data. The grayscale
+image represents sea-level as `#FFFFFF`, and the lowest sea-depth as `#000000`.
+Similar to Step 1, there are two scripts to choose from.
+
+To recreate the world map similar to the LEGO world map, run this script:
+
+```commandline
+poetry run python map_generator/step_4_sea_grayscale_world_map.py step_3.png step_4.png
+```
+
+To generate a custom map of a specific part of the globe, run this other
+script, which takes in similar parameters to the script in Step 1. An
+additional argument is required for determining the lowest sea-depth using
+`max-depth`, which is measured in meters.
+
+```commandline
+poetry run python map_generator/step_4_sea_grayscale_utm_map.py step_3.png step_4.png --size=80,128 --center=1.8,58.8 --scale=15000 --rotation=25 --max-depth=3500
+```
+
+The first argument of both scripts is an image that is used as a mask for
+determining which pixels to calculate a sea-depth for. For example, if a pixel
+already has a colour assigned against it (e.g. `#FFFFFF`) it will skip on to
+the next pixel. Only when the colour is `#000000` will the script compute a
+colour.
+
+### Step 5 - Generate the final mosaic
+
+The final and most complicated script will take in multiple input files to
+distribute the coloured tiles on-top of the image generated in Step 3.
+
+The parameters, in order, are:
+
+* The image from Step 3.
+* The image from Step 4.
+* A CSV of the proportions, which correlates image brightness to colour
+distribution. Each column in the CSV represents the proportion that each colour
+has at a particular "depth" in the map. The headers represent the brightness
+values of the image from 0 to 255 in the image from Step 4.
+* A CSV of the tile counts for each colour that can be used in the final mosaic.
+* The output file path.
+
+```commandline
+poetry run python map_generator/step_5_sea.py step_3.png step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv step_5.png
+```
 
 ### Step 6 - Generate High-res image (Optional)
 
-Optionally, if you want to create an enlarged scale of the final image with
-rounded tiles instead of pixels, you can run this script.
+To create an enlarged scale of the final image with rounded tiles instead of
+basic pixels, run this script.
 
 ```commandline
 poetry run python map_generator/step_6_pixels_to_lego.py step_5.png step_6.png
 ```
 
------
-
 ## Map Analysis
 
-### count_tiles_from_ascii.py and count_tiles_from_image.py
+### count_tiles_from_image.py
+
+After generating the 1-bit image in Step 2 you might want to check that
+you have enough white tiles to actually create the image. This script will be
+helpful in doing a quick count of all the pixels in an image.
+
+Below is a quick example of what the script output looks like:
+
+```
+poetry run python map_analysis/count_tiles_from_image.py step_3.png
+0,0,0:          6832
+01 - White:     3039
+02 - Navy:       369
+total:         10240
+```
+
+### count_tiles_from_ascii.py
 
 When I started this project, I created a bunch of ASCII Grid files that
-represented the tile placements in the LEGO World Map. You can see them in
-[/data/lego_world_map_ascii/](/data/lego_world_map_ascii/).
+represented the tile placements in the official LEGO World Map. You can see
+them in [/data/lego_world_map_ascii/](/data/lego_world_map_ascii/).
 
-I created a script that counts the unique numbers in the files.
+I created a script that counts the unique numbers in the files, similar to the
+`count_tiles_from_image.py` script.
 
 ```commandline
 poetry run python map_analysis/count_tiles_from_ascii.py data/lego_world_map_ascii/*
-``` 
-
-I made a similar script for counting unique colours in an image.
-
-```commandline
-poetry run python map_analysis/count_tiles_from_image.py readme_files/full_lego.png
 ```
+
+### The other scripts
+
+Two other scripts exist in this directory, but they are mainly written in a
+rush to do some quick analysis of the data. I may or may not document this
+in the future. 
 
 ## Tile counts
 
@@ -216,27 +278,3 @@ some randomness.
 | Orange extras bag | 2          |
 | Coral bag         | 625        |
 | Coral extras bag  | 2          |
-
-## Script descriptions
-
-### count_tiles_from_ascii.py
-
-Iterates through space separated CSV or ASCII Grid files and returns the total
-number of tiles grouped by the tile number.  
-
-How to run:
-
-```console
-% poetry run python map_analysis/count_tiles_from_ascii.py ./data/lego_world_map_ascii/column-*.asc
-```
-
-### count_tiles_from_image.py
-
-Iterates through image files and returns the total number of tiles grouped by
-the tile color.  
-
-How to run:
-
-```console
-% poetry run python map_analysis/count_tiles_from_image.py ./readme_files/full_lego.png
-```
