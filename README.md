@@ -8,57 +8,36 @@ decisions they made.
 
 **This project is not affiliated with The Lego Group.**
 
-## Tile counts
+## Script descriptions
 
-The box set contains an excess number of tiles to allow you to customise the
-world a bit, but the there are different amounts for each color.
+Scripts are grouped in two sections:
 
-The total number of tiles for each color are listed below:
+* `map_analysis` - Scripts to analyse tile distributions and bathymetric data.
+* `map_generator` - Scripts to generate the mosaics
 
-| Tile color | # of tiles required for World Map | # of tiles in box set according to booklet | Actual # of tiles in my box |
-|----------------------------------------------------------------|------|------|------|
-| ![White](https://img.shields.io/badge/-White-rgb(255,255,255)) | 3062 | 3064 | 3198 |
-| ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91))       |  392 |  393 |  410 |
-| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210))    | 1606 | 1607 | 1668 |
-| ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150))     | 1878 | 1879 | 1956 |
-| ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55))    |  529 |  601 |  621 |
-| ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16))  | 1019 | 1060 | 1106 |
-| ![Beige](https://img.shields.io/badge/-Beige-rgb(226,202,144)) |  724 |  725 |  752 |
-| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) |  598 |  599 |  619 |
-| ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) |  229 |  601 |  625 |
-| ![Coral](https://img.shields.io/badge/-Coral-rgb(237,106,112)) |  203 |  601 |  627 |
-| **Total** | **10240** | **11130** | **11582** |
+### Pre-requisites
 
-I also collected statistics on individual bags that I found in my set.
-Your tile count will probably be different to mine, since there appears to be
-some randomness.
+First make sure python is installed. The run the following commands to install
+dependencies and download map data.
 
-| Bag name          | tile count |
-|-------------------|------------|
-| White bag 1       | 1065       |
-| White bag 2       | 1067       |
-| White bag 3       | 1064       |
-| White extras bag  | 2          |
-| Navy bag 1        | 408        |
-| Navy extras bag   | 2          |
-| Cyan bag 1        | 829        |
-| Cyan bag 2        | 837        |
-| Cyan extras bag   | 2          |
-| Teal bag 1        | 977        |
-| Teal bag 2        | 977        |
-| Teal extras bag   | 2          |
-| Green bag         | 619        |
-| Green extras bag  | 2          |
-| Olive bag         | 1104       |
-| Olive extras bag  | 2          |
-| Beige bag         | 750        |
-| Beige extras bag  | 2          |
-| Yellow bag        | 617        |
-| Yellow extras bag | 2          |
-| Orange bag        | 623        |
-| Orange extras bag | 2          |
-| Coral bag         | 625        |
-| Coral extras bag  | 2          |
+```commandline
+make install
+make download_ne_data
+make download_gebco_data
+```
+
+### map_analysis
+
+#### Count number of tiles in an ASCII Grid file
+
+When I started this project, I created a bunch of ASCII Grid files that
+represented the tile placements in the LEGO World Map. You can see them in
+[/data/lego_world_map_ascii/](/data/lego_world_map_ascii/)
+
+
+```commandline
+poetry run python map_analysis/count_tiles_from_ascii.py data/lego_world_map_ascii/*
+``` 
 
 ## Different land rendering attempts
 
@@ -115,6 +94,58 @@ using a UTM projection.
 | New Guinea  | ![Land rendering of New Guinea](readme_files/land_new_guinea_x3.png)   | ![Grayscale sea-depth rendering of New Guinea](readme_files/depth_new_guinea_x3.png)   | ![Rendering of New Guinea](readme_files/full_new_guinea_x3.png)   |
 | Corsica     | ![Land rendering of Corsica](readme_files/land_corsica_x3.png)         | ![Grayscale sea-depth rendering of Corsica](readme_files/depth_corsica_x3.png)         | ![Rendering of Corsica](readme_files/full_corsica_x3.png)         |
 | New Zealand | ![Land rendering of New Zealand](readme_files/land_new_zealand_x3.png) | ![Grayscale sea-depth rendering of New Zealand](readme_files/depth_new_zealand_x3.png) | ![Rendering of New Zealand](readme_files/full_new_zealand_x3.png) |
+
+## Tile counts
+
+The official box set contains an excess number of tiles to allow you to
+customise the world a bit, but the there are different amounts for each color.
+
+The total number of tiles for each color are listed below:
+
+| Tile color | # of tiles required for World Map | # of tiles in box set according to booklet | Actual # of tiles in my box |
+|----------------------------------------------------------------|------|------|------|
+| ![White](https://img.shields.io/badge/-White-rgb(255,255,255)) | 3062 | 3064 | 3198 |
+| ![Navy](https://img.shields.io/badge/-Navy-rgb(0,53,91))       |  392 |  393 |  410 |
+| ![Cyan](https://img.shields.io/badge/-Cyan-rgb(19,183,210))    | 1606 | 1607 | 1668 |
+| ![Teal](https://img.shields.io/badge/-Teal-rgb(0,153,150))     | 1878 | 1879 | 1956 |
+| ![Green](https://img.shields.io/badge/-Green-rgb(0,161,55))    |  529 |  601 |  621 |
+| ![Olive](https://img.shields.io/badge/-Olive-rgb(162,197,16))  | 1019 | 1060 | 1106 |
+| ![Beige](https://img.shields.io/badge/-Beige-rgb(226,202,144)) |  724 |  725 |  752 |
+| ![Yellow](https://img.shields.io/badge/-Yellow-rgb(248,172,0)) |  598 |  599 |  619 |
+| ![Orange](https://img.shields.io/badge/-Orange-rgb(238,117,0)) |  229 |  601 |  625 |
+| ![Coral](https://img.shields.io/badge/-Coral-rgb(237,106,112)) |  203 |  601 |  627 |
+| **Total** | **10240** | **11130** | **11582** |
+
+I also collected statistics on individual bags that I found in my set.
+Your tile count will probably be different to mine, since there appears to be
+some randomness.
+
+| Bag name          | tile count |
+|-------------------|------------|
+| White bag 1       | 1065       |
+| White bag 2       | 1067       |
+| White bag 3       | 1064       |
+| White extras bag  | 2          |
+| Navy bag 1        | 408        |
+| Navy extras bag   | 2          |
+| Cyan bag 1        | 829        |
+| Cyan bag 2        | 837        |
+| Cyan extras bag   | 2          |
+| Teal bag 1        | 977        |
+| Teal bag 2        | 977        |
+| Teal extras bag   | 2          |
+| Green bag         | 619        |
+| Green extras bag  | 2          |
+| Olive bag         | 1104       |
+| Olive extras bag  | 2          |
+| Beige bag         | 750        |
+| Beige extras bag  | 2          |
+| Yellow bag        | 617        |
+| Yellow extras bag | 2          |
+| Orange bag        | 623        |
+| Orange extras bag | 2          |
+| Coral bag         | 625        |
+| Coral extras bag  | 2          |
 
 ## Script descriptions
 
