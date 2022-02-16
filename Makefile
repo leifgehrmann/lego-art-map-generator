@@ -83,7 +83,7 @@ world_map_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/world_map_step_1.png output/world_map_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/world_map_step_2.png output/world_map_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_world_map.py output/world_map_step_3.png output/world_map_step_4.png
-	poetry run python map_generator/step_5_sea_2.py output/world_map_step_3.png output/world_map_step_4.png data/world_map_brightness_tile_proportion_2.csv data/world_map_max_tile_counts.csv output/world_map_step_5.png
+	poetry run python map_generator/step_5_sea.py output/world_map_step_3.png output/world_map_step_4.png data/world_map_brightness_tile_proportion_2.csv data/world_map_max_tile_counts.csv output/world_map_step_5.png
 
 north_sea_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/north_sea_step_1_x4.png --size=80,128 --center=1.8,58.8 --scale=15000 --rotation=25 --pixel-scale-factor=4
@@ -91,7 +91,7 @@ north_sea_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/north_sea_step_1.png output/north_sea_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/north_sea_step_2.png output/north_sea_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/north_sea_step_3.png output/north_sea_step_4.png --size=80,128 --center=1.8,58.8 --scale=15000 --rotation=25 --max-depth=3500
-	poetry run python map_generator/step_5_sea_2.py output/north_sea_step_3.png output/north_sea_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/north_sea_step_5.png
+	poetry run python map_generator/step_5_sea.py output/north_sea_step_3.png output/north_sea_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/north_sea_step_5.png
 
 denmark_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/denmark_step_1_x4.png --size=80,80 --center=10,55.5 --scale=8000 --rotation=0 --pixel-scale-factor=4
@@ -99,7 +99,7 @@ denmark_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/denmark_step_1.png output/denmark_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/denmark_step_2.png output/denmark_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/denmark_step_3.png output/denmark_step_4.png --size=80,80 --center=10,55.5 --scale=8000 --rotation=0 --max-depth=700
-	poetry run python map_generator/step_5_sea_2.py output/denmark_step_3.png output/denmark_step_4.png data/denmark_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/denmark_step_5.png
+	poetry run python map_generator/step_5_sea.py output/denmark_step_3.png output/denmark_step_4.png data/denmark_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/denmark_step_5.png
 
 new_zealand_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/new_zealand_step_1_x4.png --size=80,96 --center=172.8,-41 --scale=17500 --rotation=0 --pixel-scale-factor=4
@@ -107,7 +107,7 @@ new_zealand_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/new_zealand_step_1.png output/new_zealand_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/new_zealand_step_2.png output/new_zealand_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/new_zealand_step_3.png output/new_zealand_step_4.png --size=80,96 --center=172.8,-41 --scale=17500 --rotation=0 --max-depth=3500
-	poetry run python map_generator/step_5_sea_2.py output/new_zealand_step_3.png output/new_zealand_step_4.png data/new_zealand_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/new_zealand_step_5.png
+	poetry run python map_generator/step_5_sea.py output/new_zealand_step_3.png output/new_zealand_step_4.png data/new_zealand_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/new_zealand_step_5.png
 
 new_guinea_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/new_guinea_step_1_x4.png --size=128,80 --center=141,-5 --scale=19000 --rotation=2 --pixel-scale-factor=4
@@ -115,7 +115,7 @@ new_guinea_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/new_guinea_step_1.png output/new_guinea_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/new_guinea_step_2.png output/new_guinea_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/new_guinea_step_3.png output/new_guinea_step_4.png --size=128,80 --center=141,-5 --scale=19000 --rotation=2 --max-depth=5000
-	poetry run python map_generator/step_5_sea_2.py output/new_guinea_step_3.png output/new_guinea_step_4.png data/new_guinea_map_brightness_tile_proportion.csv data/new_guinea_map_max_tile_counts.csv output/new_guinea_step_5.png
+	poetry run python map_generator/step_5_sea.py output/new_guinea_step_3.png output/new_guinea_step_4.png data/new_guinea_map_brightness_tile_proportion.csv data/new_guinea_map_max_tile_counts.csv output/new_guinea_step_5.png
 
 madagascar_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/madagascar_step_1_x4.png --size=80,128 --center=46.3,-19 --scale=14000 --rotation=0 --pixel-scale-factor=4
@@ -123,7 +123,7 @@ madagascar_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/madagascar_step_1.png output/madagascar_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/madagascar_step_2.png output/madagascar_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/madagascar_step_3.png output/madagascar_step_4.png --size=80,128 --center=46.3,-19 --scale=14000 --rotation=0 --max-depth=5000
-	poetry run python map_generator/step_5_sea_2.py output/madagascar_step_3.png output/madagascar_step_4.png data/madagascar_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/madagascar_step_5.png
+	poetry run python map_generator/step_5_sea.py output/madagascar_step_3.png output/madagascar_step_4.png data/madagascar_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/madagascar_step_5.png
 
 iceland_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/iceland_step_1_x4.png --size=128,80 --center=-18.7,65 --scale=5800 --rotation=0 --pixel-scale-factor=4
@@ -131,7 +131,7 @@ iceland_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/iceland_step_1.png output/iceland_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/iceland_step_2.png output/iceland_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/iceland_step_3.png output/iceland_step_4.png --size=128,80 --center=-18.7,65 --scale=5800 --rotation=0 --max-depth=3500
-	poetry run python map_generator/step_5_sea_2.py output/iceland_step_3.png output/iceland_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/iceland_step_5.png
+	poetry run python map_generator/step_5_sea.py output/iceland_step_3.png output/iceland_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/world_map_max_tile_counts.csv output/iceland_step_5.png
 
 greece_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/greece_step_1_x4.png --pixel-scale-factor=4 --size=128,80 --center=22,37.5 --scale=12500 --rotation=0
@@ -139,7 +139,7 @@ greece_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/greece_step_1.png output/greece_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/greece_step_2.png output/greece_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/greece_step_3.png output/greece_step_4.png --max-depth=4400 --size=128,80 --center=22,37.5 --scale=12500 --rotation=0
-	poetry run python map_generator/step_5_sea_2.py output/greece_step_3.png output/greece_step_4.png data/greece_map_brightness_tile_proportion.csv data/greece_map_max_tile_counts.csv output/greece_step_5.png
+	poetry run python map_generator/step_5_sea.py output/greece_step_3.png output/greece_step_4.png data/greece_map_brightness_tile_proportion.csv data/greece_map_max_tile_counts.csv output/greece_step_5.png
 
 corsica_example:
 	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/corsica_step_1_x4.png --size=80,128 --center=9.1,42.2 --scale=1700 --rotation=0 --pixel-scale-factor=4
@@ -147,7 +147,7 @@ corsica_example:
 	poetry run python map_generator/step_2_grayscale_to_1bit.py output/corsica_step_1.png output/corsica_step_2.png --mode=custom_1
 	poetry run python map_generator/step_3_land_shadow.py output/corsica_step_2.png output/corsica_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/corsica_step_3.png output/corsica_step_4.png --size=80,128 --center=9.1,42.2 --scale=1700 --rotation=0 --max-depth=3000
-	poetry run python map_generator/step_5_sea_2.py output/corsica_step_3.png output/corsica_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/new_guinea_map_max_tile_counts.csv output/corsica_step_5.png
+	poetry run python map_generator/step_5_sea.py output/corsica_step_3.png output/corsica_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/new_guinea_map_max_tile_counts.csv output/corsica_step_5.png
 
 lint: ## Checks for linting errors
 	poetry run flake8
