@@ -76,6 +76,12 @@ readme_files:
 	convert output/new_zealand_step_2.png -filter box -resize 240x288 readme_files/land_new_zealand_x3.png
 	convert output/new_zealand_step_4.png -filter box -resize 240x288 readme_files/depth_new_zealand_x3.png
 	convert output/new_zealand_step_5.png -filter box -resize 240x288 readme_files/full_new_zealand_x3.png
+	convert output/scotland_step_2.png -filter box -resize 240x384 readme_files/land_scotland_x3.png
+	convert output/scotland_step_4.png -filter box -resize 240x384 readme_files/depth_scotland_x3.png
+	convert output/scotland_step_5.png -filter box -resize 240x384 readme_files/full_scotland_x3.png
+	convert output/scotland_mainland_step_2.png -filter box -resize 240x288 readme_files/land_scotland_mainland_x3.png
+	convert output/scotland_mainland_step_4.png -filter box -resize 240x288 readme_files/depth_scotland_mainland_x3.png
+	convert output/scotland_mainland_step_5.png -filter box -resize 240x288 readme_files/full_scotland_mainland_x3.png
 
 world_map_example:
 	poetry run python map_generator/step_1_land_grayscale_world_map.py output/world_map_step_1_x8.png --pixel-scale-factor=8
@@ -148,6 +154,22 @@ corsica_example:
 	poetry run python map_generator/step_3_land_shadow.py output/corsica_step_2.png output/corsica_step_3.png
 	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/corsica_step_3.png output/corsica_step_4.png --size=80,128 --center=9.1,42.2 --scale=1700 --rotation=0 --max-depth=3000
 	poetry run python map_generator/step_5_sea.py output/corsica_step_3.png output/corsica_step_4.png data/north_sea_map_brightness_tile_proportion.csv data/new_guinea_map_max_tile_counts.csv output/corsica_step_5.png
+
+scotland_example:
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/scotland_step_1_x4.png --size=80,128 --center=-4.5,57.8 --scale=6000 --rotation=0 --pixel-scale-factor=4
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/scotland_step_1.png --size=80,128 --center=-4.5,57.8 --scale=6000 --rotation=0
+	poetry run python map_generator/step_2_grayscale_to_1bit.py output/scotland_step_1.png output/scotland_step_2.png --mode=custom_1
+	poetry run python map_generator/step_3_land_shadow.py output/scotland_step_2.png output/scotland_step_3.png
+	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/scotland_step_3.png output/scotland_step_4.png --size=80,128 --center=-4.5,57.8 --scale=6000 --rotation=0 --max-depth=2000
+	poetry run python map_generator/step_5_sea.py output/scotland_step_3.png output/scotland_step_4.png data/scotland_map_brightness_tile_proportion.csv data/booklet_max_tile_counts.csv output/scotland_step_5.png
+
+scotland_mainland_example:
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/scotland_mainland_step_1_x4.png --size=80,96 --center=-4.2,57 --scale=6000 --rotation=0 --pixel-scale-factor=4
+	poetry run python map_generator/step_1_land_grayscale_utm_map.py output/scotland_mainland_step_1.png --size=80,96 --center=-4.2,57 --scale=6000 --rotation=0
+	poetry run python map_generator/step_2_grayscale_to_1bit.py output/scotland_mainland_step_1.png output/scotland_mainland_step_2.png --mode=custom_1
+	poetry run python map_generator/step_3_land_shadow.py output/scotland_mainland_step_2.png output/scotland_mainland_step_3.png
+	poetry run python map_generator/step_4_sea_grayscale_utm_map.py output/scotland_mainland_step_3.png output/scotland_mainland_step_4.png --size=80,96 --center=-4.2,57 --scale=6000 --rotation=0 --max-depth=2000
+	poetry run python map_generator/step_5_sea.py output/scotland_mainland_step_3.png output/scotland_mainland_step_4.png data/scotland_mainland_map_brightness_tile_proportion.csv data/booklet_max_tile_counts.csv output/scotland_mainland_step_5.png
 
 lint: ## Checks for linting errors
 	poetry run flake8
