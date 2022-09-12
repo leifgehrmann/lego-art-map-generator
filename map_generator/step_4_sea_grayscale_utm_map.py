@@ -11,7 +11,7 @@ from pathlib import Path
 import click
 from geotiff import GeoTiff
 
-from map_generator.utm_projection_transformer_builder import \
+from utm_projection_transformer_builder import \
     UtmProjectionTransformerBuilder
 
 

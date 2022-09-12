@@ -8,7 +8,7 @@ from typing import Dict, Tuple, Iterator, List
 
 from PIL import Image
 
-from map_generator.brightness_tile_proportions import BrightnessTileProportions
+from brightness_tile_proportions import BrightnessTileProportions
 
 
 def read_brightness_histogram_from_image(

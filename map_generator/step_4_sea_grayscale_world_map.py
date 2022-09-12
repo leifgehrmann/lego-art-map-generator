@@ -11,7 +11,7 @@ from pathlib import Path
 import click
 from geotiff import GeoTiff
 
-from map_generator.lego_projection_transformer_builder import \
+from lego_projection_transformer_builder import \
     LegoProjectionTransformerBuilder
 
 

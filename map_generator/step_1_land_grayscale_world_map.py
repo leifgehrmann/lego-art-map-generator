@@ -13,7 +13,7 @@ from shapely import ops
 from shapely.geometry import shape
 from shapely.geometry.base import BaseGeometry
 
-from map_generator.lego_projection_transformer_builder import \
+from lego_projection_transformer_builder import \
     LegoProjectionTransformerBuilder
 
 

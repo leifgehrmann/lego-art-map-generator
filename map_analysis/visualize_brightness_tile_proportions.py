@@ -6,7 +6,7 @@ from pathlib import Path
 import click
 from PIL import Image
 
-from map_generator.brightness_tile_proportions import BrightnessTileProportions
+from brightness_tile_proportions import BrightnessTileProportions
 
 
 @click.command()

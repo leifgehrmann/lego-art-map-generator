@@ -13,7 +13,7 @@ from shapely import ops
 from shapely.geometry import shape, Polygon
 from shapely.geometry.base import BaseGeometry
 
-from map_generator.utm_projection_transformer_builder import \
+from utm_projection_transformer_builder import \
     UtmProjectionTransformerBuilder
 
 
