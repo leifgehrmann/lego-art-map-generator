@@ -35,6 +35,7 @@ is used to distribute the coloured tiles.
 | Corsica             | ![Land rendering of Corsica](readme_files/land_corsica_x3.png)                       | ![Grayscale sea-depth rendering of Corsica](readme_files/depth_corsica_x3.png)                       | ![Rendering of Corsica](readme_files/full_corsica_x3.png)                       |
 | New Zealand         | ![Land rendering of New Zealand](readme_files/land_new_zealand_x3.png)               | ![Grayscale sea-depth rendering of New Zealand](readme_files/depth_new_zealand_x3.png)               | ![Rendering of New Zealand](readme_files/full_new_zealand_x3.png)               |
 | Scotland            | ![Land rendering of Scotland](readme_files/land_scotland_x3.png)                     | ![Grayscale sea-depth rendering of Scotland](readme_files/depth_scotland_x3.png)                     | ![Rendering of Scotland](readme_files/full_scotland_x3.png)                     |
+| Scotland (2)        | ![Land rendering of Scotland (2)](readme_files/land_scotland_2_x3.png)               | ![Grayscale sea-depth rendering of Scotland (2)](readme_files/depth_scotland_2_x3.png)               | ![Rendering of Scotland (2)](readme_files/full_scotland_2_x3.png)               |
 | Scotland (Mainland) | ![Land rendering of Scotland (Mainland)](readme_files/land_scotland_mainland_x3.png) | ![Grayscale sea-depth rendering of Scotland (Mainland)](readme_files/depth_scotland_mainland_x3.png) | ![Rendering of Scotland (Mainland)](readme_files/full_scotland_mainland_x3.png) |
 
 ## Project structure
