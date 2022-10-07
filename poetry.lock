@@ -161,8 +161,8 @@ develop = false
 [package.dependencies]
 cairocffi = "^1.2.0"
 CairoSVG = "^2.5.2"
-pangocairocffi = "^0.6.0"
-pangocffi = "^0.10.0"
+pangocairocffi = "^0.7.0"
+pangocffi = "^0.11.0"
 Pillow = "^9.1.1"
 pyproj = "^3.1.0"
 Shapely = "^1.7.1"
@@ -172,7 +172,7 @@ tqdm = "^4.64.0"
 type = "git"
 url = "https://github.com/leifgehrmann/map-engraver.git"
 reference = "HEAD"
-resolved_reference = "bc307917e8f8c89f3f463a1620047bfdac5bd4cc"
+resolved_reference = "e907c96968fbd5d479b2c99adb1fea4d25228866"
 
 [[package]]
 name = "mccabe"
@@ -208,7 +208,7 @@ python-versions = ">=3.8"
 
 [[package]]
 name = "pangocairocffi"
-version = "0.6.0"
+version = "0.7.0"
 description = "CFFI-based pango-cairo bindings for Python"
 category = "main"
 optional = false
@@ -217,11 +217,11 @@ python-versions = ">=3.6"
 [package.dependencies]
 cairocffi = ">=1.0.2"
 cffi = ">=1.1.0"
-pangocffi = ">=0.10.0"
+pangocffi = ">=0.11.0"
 
 [[package]]
 name = "pangocffi"
-version = "0.10.0"
+version = "0.11.0"
 description = "CFFI-based pango bindings for Python"
 category = "main"
 optional = false
@@ -546,10 +546,10 @@ numpy = [
     {file = "numpy-1.23.3.tar.gz", hash = "sha256:51bf49c0cd1d52be0a240aa66f3458afc4b95d8993d2d04f0d91fa60c10af6cd"},
 ]
 pangocairocffi = [
-    {file = "pangocairocffi-0.6.0.tar.gz", hash = "sha256:0be41505990b7b790b140ea95638c0a1e11b4a44ddbe526bca6dd737a316aae5"},
+    {file = "pangocairocffi-0.7.0.tar.gz", hash = "sha256:7fa437a88df45ad5e0d0538b6a7bcaaf1273f37a047fcdc8e4623fd6945048cc"},
 ]
 pangocffi = [
-    {file = "pangocffi-0.10.0.tar.gz", hash = "sha256:77ecc37928a3cd1a1e271265579e1a997ca2cfac095d5ebd2508f329fb070405"},
+    {file = "pangocffi-0.11.0.tar.gz", hash = "sha256:ef02ff5cad2d729d8b55cb54d1bfc57a1ea201278f6e979c4f8ea1f66bcfc64e"},
 ]
 Pillow = [
     {file = "Pillow-9.2.0-cp310-cp310-macosx_10_10_x86_64.whl", hash = "sha256:a9c9bc489f8ab30906d7a85afac4b4944a572a7432e00698a7239f44a44e6efb"},
@@ -625,11 +625,13 @@ pyflakes = [
 ]
 pyproj = [
     {file = "pyproj-3.4.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:f343725566267a296b09ee7e591894f1fdc90f84f8ad5ec476aeb53bd4479c07"},
+    {file = "pyproj-3.4.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:5816807ca0bdc7256558770c6206a6783a3f02bcf844f94ee245f197bb5f7285"},
     {file = "pyproj-3.4.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e7e609903572a56cca758bbaee5c1663c3e829ddce5eec4f368e68277e37022b"},
     {file = "pyproj-3.4.0-cp310-cp310-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:4fd425ee8b6781c249c7adb7daa2e6c41ce573afabe4f380f5eecd913b56a3be"},
     {file = "pyproj-3.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:954b068136518b3174d0a99448056e97af62b63392a95c420894f7de2229dae6"},
     {file = "pyproj-3.4.0-cp310-cp310-win_amd64.whl", hash = "sha256:4a23d84c5ffc383c7d9f0bde3a06fc1f6697b1b96725597f8f01e7b4bef0a2b5"},
     {file = "pyproj-3.4.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:1f9c100fd0fd80edbc7e4daa303600a8cbef6f0de43d005617acb38276b88dc0"},
+    {file = "pyproj-3.4.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:aa5171f700f174777a9e9ed8f4655583243967c0f9cf2c90e3f54e54ff740134"},
     {file = "pyproj-3.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9a496d9057b2128db9d733e66b206f2d5954bbae6b800d412f562d780561478c"},
     {file = "pyproj-3.4.0-cp311-cp311-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:52e54796e2d9554a5eb8f11df4748af1fbbc47f76aa234d6faf09216a84554c5"},
     {file = "pyproj-3.4.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a454a7c4423faa2a14e939d08ef293ee347fa529c9df79022b0585a6e1d8310c"},
@@ -640,6 +642,7 @@ pyproj = [
     {file = "pyproj-3.4.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f80adda8c54b84271a93829477a01aa57bc178c834362e9f74e1de1b5033c74c"},
     {file = "pyproj-3.4.0-cp38-cp38-win_amd64.whl", hash = "sha256:221d8939685e0c43ee594c9f04b6a73a10e8e1cc0e85f28be0b4eb2f1bc8777d"},
     {file = "pyproj-3.4.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:d94afed99f31673d3d19fe750283621e193e2a53ca9e0443bf9d092c3905833b"},
+    {file = "pyproj-3.4.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:0fff9c3a991508f16027be27d153f6c5583d03799443639d13c681e60f49e2d7"},
     {file = "pyproj-3.4.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3b85acf09e5a9e35cd9ee72989793adb7089b4e611be02a43d3d0bda50ad116b"},
     {file = "pyproj-3.4.0-cp39-cp39-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:45554f47d1a12a84b0620e4abc08a2a1b5d9f273a4759eaef75e74788ec7162a"},
     {file = "pyproj-3.4.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:12f62c20656ac9b6076ebb213e9a635d52f4f01fef95310121d337e62e910cb6"},
