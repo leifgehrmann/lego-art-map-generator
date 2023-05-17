@@ -9,7 +9,7 @@ license = "MIT"
 # numpy has a broken dependency management system that claims it doesn't
 # support python 3.11
 python = "~3.10"
-Shapely = "^1.7.1"
+Shapely = "^2.0.1"
 pyshp = "^2.1.3"
 pyproj = "^3.2.0"
 click = "^8.0.1"
