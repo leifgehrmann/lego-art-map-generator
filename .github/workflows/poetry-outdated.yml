@@ -2,8 +2,12 @@ name: Poetry Outdated
 
 on:
   push:
-    branches:
-      - main
+  pull_request:
+
+#on:
+#  push:
+#    branches:
+#      - main
 
 jobs:
   outdated:
@@ -27,6 +31,10 @@ jobs:
         with:
           poetry-version: ${{ matrix.poetry-version }}
 
+      - name: Install dependencies
+        run: |
+          make install
+
       - name: Show outdated dependencies
         run: |
-          poetry show --outdated | grep --file=<(poetry show --tree | grep '^\w' | cut -d' ' -f1) 1>&2
+          ! poetry show --outdated | grep --file=<(poetry show --tree | grep '^\w' | cut -d' ' -f1) 1>&2
