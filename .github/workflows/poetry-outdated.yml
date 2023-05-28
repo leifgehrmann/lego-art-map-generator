@@ -37,7 +37,4 @@ jobs:
 
       - name: Show outdated dependencies
         run: |
-          poetry show --outdated
-          poetry show --tree | grep '^\w' | cut -d' ' -f1
-          poetry show --outdated | grep --file=<(poetry show --tree | grep '^\w' | cut -d' ' -f1)
-          poetry show --outdated | grep --file=<(poetry show --tree | grep '^\w' | cut -d' ' -f1) 1>&2
+          ! poetry show --outdated | grep --file=<(poetry show --tree | grep '^\w' | cut -d' ' -f1) 1>&2
