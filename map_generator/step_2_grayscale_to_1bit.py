@@ -5,8 +5,8 @@ import click
 from PIL import Image
 
 # Load image
-from numpy import zeros, dtype
-from numpy import asarray
+from numpy import zeros, dtype, uint16
+from numpy import asarray, array
 
 
 def get_neighbors(x: int, y: int, source) -> List[int]:
@@ -26,7 +26,8 @@ def get_neighbors(x: int, y: int, source) -> List[int]:
 def custom_kernel_filter(x: int, y: int, source) -> int:
     c_val = source[y, x]
     neighbors = get_neighbors(x, y, source)
-    n_val = sum(neighbors) / float(len(neighbors))
+    n_sum = sum(array(neighbors).astype(uint16))
+    n_val = n_sum / float(len(neighbors))
     if n_val > c_val * 1.15:
         return 0
     elif n_val < c_val * 0.85:
