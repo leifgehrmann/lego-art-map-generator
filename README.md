@@ -1,5 +1,7 @@
 # lego-art-map-generator
 
+Archive note: This project has been moved to https://codeberg.org/leifgehrmann/lego-art-map-generator
+
 Scripts for generating custom mosaics for the LEGO [31203 World Map] set.
 
 The mosaics aim to imitate the same style as the original 'World Map' set, with
